@@ -1,0 +1,1944 @@
+  <style>
+        /*
+ * Raiz de Variáveis CSS
+ * Define um sistema de design baseado em cores, sombras, gradientes e transições.
+ * Utiliza convenções de nomenclatura claras para facilitar a manutenção.
+ */
+        :root {
+            /* Paleta de Cores Primárias */
+            --primary: #e63946;
+            /* Vermelho vibrante */
+            --primary-dark: #b80c17;
+            /* Vermelho escuro para estados de hover/ativo */
+            --primary-light: #ff9999;
+            /* Tom mais claro para detalhes */
+
+            /* Paleta de Cores Neutras (Modo Escuro) */
+            --dark: #0a0a0a;
+            /* Fundo mais escuro */
+            --gray-dark: #1e1e1e;
+            /* Fundo de seções, cabeçalhos */
+            --gray-medium: #2c2c2c;
+            /* Fundo de cards/componentes */
+            --gray-light: #404040;
+            /* Bordas e divisores */
+            --light: #f1f3f5;
+            /* Cor do texto principal */
+            --light-gray: #d1d5db;
+            /* Cor de texto secundário, placeholders */
+
+            /* Cores de Status e Feedback */
+            --danger: #e63946;
+            /* Erro/Perigo - igual ao primary para consistência visual */
+            --warning: #f59e0b;
+            /* Alerta/Aviso */
+            --success: #10b981;
+            /* Sucesso/Positivo */
+            --info: #3b82f6;
+            /* Informação/Destaque secundário */
+            --cyber-blue: #06b6d4;
+            /* Azul vibrante para links/interatividade */
+            --critical: #7c3aed;
+            /* Risco Crítico - roxo intenso */
+
+            /* Sombras */
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            /* Sombra geral para elementos flutuantes */
+            --card-shadow: 0 6px 24px rgba(230, 57, 70, 0.15);
+            /* Sombra específica para cards */
+
+            /* Gradientes */
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            /* Gradiente primário */
+
+            /* Bordas */
+            --card-border: 1px solid rgba(230, 57, 70, 0.2);
+            /* Borda padrão para cards */
+
+            /* Transições */
+            --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-duration: 0.3s;
+            --transition: all var(--transition-duration) var(--transition-timing);
+            /* Transição padrão para interatividade */
+        }
+
+        /*
+ * Reset Básico
+ * Aplica um reset mínimo para garantir consistência entre navegadores.
+ */
+        * {
+            box-sizing: border-box;
+            /* Garante que padding e border sejam incluídos na largura/altura total */
+            margin: 0;
+            /* Remove margens padrão */
+            padding: 0;
+            /* Remove preenchimentos padrão */
+        }
+
+        /*
+ * Estilos do Corpo da Página (Body)
+ * Configura o layout principal, tipografia e fundo.
+ */
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Fonte principal para o corpo */
+            background: linear-gradient(180deg, var(--dark) 0%, var(--gray-dark) 100%);
+            /* Gradiente de fundo */
+            color: var(--light);
+            /* Cor do texto padrão */
+            line-height: 1.7;
+            /* Espaçamento entre linhas para legibilidade */
+            min-height: 100vh;
+            /* Ocupa a altura total da viewport */
+            display: flex;
+            /* Habilita Flexbox para o layout geral */
+            flex-direction: column;
+            /* Coloca os itens em coluna */
+            overflow-x: hidden;
+            /* Previne rolagem horizontal indesejada */
+            text-rendering: optimizeLegibility;
+            /* Otimiza a renderização do texto */
+            -webkit-font-smoothing: antialiased;
+            /* Suaviza fontes no WebKit */
+            -moz-osx-font-smoothing: grayscale;
+            /* Suaviza fontes no Firefox (macOS) */
+        }
+
+        /*
+ * Container Principal
+ * Centraliza o conteúdo e define o padding responsivo.
+ */
+        .container {
+            max-width: 1800px;
+            /* Largura máxima para o conteúdo */
+            margin: 0 auto;
+            /* Centraliza horizontalmente */
+            padding: 2.5rem;
+            /* Padding padrão em todos os lados */
+            flex-grow: 1;
+            /* Permite que o container ocupe o espaço disponível */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Conteúdo em coluna */
+        }
+
+        /*
+ * Cabeçalho (Header)
+ * Estilos para a seção superior da página.
+ */
+        /*
+ * Cabeçalho (Header)
+ * Estilos para a seção superior da página.
+ */
+        header {
+            background: var(--gray-dark);
+            /* Cor de fundo do cabeçalho */
+            padding: 1.5rem 2.5rem;
+            /* Padding interno ajustado */
+            margin-bottom: 2.5rem;
+            /* Espaçamento abaixo do cabeçalho */
+            border-bottom: 2px solid var(--primary);
+            /* Borda inferior de destaque */
+            box-shadow: var(--shadow);
+            /* Sombra para profundidade */
+            position: relative;
+            /* Necessário para z-index */
+            z-index: 10;
+            /* Garante que o cabeçalho fique sobre outros elementos */
+            min-height: 120px;
+            /* Altura mínima para garantir espaço */
+        }
+
+        .header-content {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: flex-start;
+            /* Alinha itens no topo */
+            justify-content: flex-start;
+            /* Alinha à esquerda, controlando espaçamento manualmente */
+            max-width: 1800px;
+            /* Largura máxima do conteúdo do cabeçalho */
+            margin: 100 auto;
+            /* Centraliza */
+            padding: 0;
+            /* Remove padding interno, já no header */
+            gap: 4rem;
+            /* Espaçamento maior entre logo e botões */
+        }
+
+        .logo {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente ao centro */
+            gap: 1.2rem;
+            /* Espaçamento entre o ícone e o texto */
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            /* Tamanho do ícone */
+            color: var(--primary);
+            /* Cor do ícone */
+            filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.6));
+            /* Sombra para o ícone */
+            transition: var(--transition);
+            /* Transição suave em interações */
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.15) rotate(5deg);
+            /* Efeito de hover no ícone */
+        }
+
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            /* Estilo futurista */
+            font-size: 2.2rem;
+            /* Tamanho do título */
+            margin: 0;
+            /* Remove margem */
+            color: var(--primary);
+            /* Cor do título */
+            letter-spacing: 2px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+            text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+            /* Sombra sutil */
+            display: flex;
+            /* Habilita Flexbox para alinhar o badge */
+            align-items: center;
+            /* Alinha verticalmente */
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            /* Tamanho do subtítulo */
+            margin: 0.5rem 0 0;
+            /* Espaçamento abaixo do título */
+            color: var(--light-gray);
+            /* Cor do texto secundário */
+            font-weight: 300;
+            /* Peso leve */
+            letter-spacing: 0.5px;
+            /* Espaçamento sutil */
+        }
+
+        /* Badge (opcional, ajustado para risk-critical) */
+        .risk-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            background: var(--critical);
+            /* Cor do badge risk-critical */
+            color: white;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+            /* Animação de pulsação */
+        }
+
+        .risk-critical {
+            background-color: var(--critical);
+            /* Garante consistência */
+            color: white;
+        }
+
+        /*
+ * Seção de botões
+ */
+        .result-actions {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Empilha os botões verticalmente */
+            align-items: flex-end;
+            /* Alinha à direita */
+            gap: 1rem;
+            /* Espaçamento entre botões */
+            padding: 0.5rem;
+        }
+
+        /* Estilização dos botões */
+        .result-actions .btn {
+            padding: 0.7rem 1.5rem;
+            /* Padding para botões */
+            font-size: 0.9rem;
+            /* Tamanho da fonte */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            color: white;
+            /* Texto branco */
+            border: none;
+            /* Remove borda */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            /* Sombra leve */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Transição suave */
+            width: 160px;
+            /* Largura fixa */
+            text-align: center;
+            /* Centraliza texto */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+        }
+
+        .result-actions .btn i {
+            margin-right: 0.5rem;
+            /* Espaçamento entre ícone e texto */
+        }
+
+        .result-actions .btn:hover {
+            transform: translateY(-2px);
+            /* Elevação no hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            /* Sombra ampliada */
+        }
+
+        /* Cores específicas dos botões */
+        .btn-primary {
+            background: var(--primary);
+            /* Vermelho (#e63946) */
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            /* Vermelho escuro (#b80c17) */
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            /* Cinza (#2c2c2c) */
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-light);
+            /* Cinza claro (#404040) */
+        }
+
+        .btn-success {
+            background: var(--success);
+            /* Verde (#10b981) */
+        }
+
+        .btn-success:hover {
+            background: #0d9c70;
+            /* Verde escuro */
+        }
+
+        /*
+ * Seção de botões
+ */
+        .result-actions {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Empilha os botões verticalmente */
+            align-items: flex-end;
+            /* Alinha à direita */
+            gap: 1rem;
+            /* Espaçamento entre botões */
+            padding: 0.5rem;
+        }
+
+        /* Estilização dos botões */
+        .result-actions .btn {
+            padding: 0.7rem 1.5rem;
+            /* Padding para botões */
+            font-size: 0.9rem;
+            /* Tamanho da fonte */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            color: white;
+            /* Texto branco */
+            border: none;
+            /* Remove borda */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            /* Sombra leve */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Transição suave */
+            width: 160px;
+            /* Largura fixa */
+            text-align: center;
+            /* Centraliza texto */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+        }
+
+        .result-actions .btn i {
+            margin-right: 0.5rem;
+            /* Espaçamento entre ícone e texto */
+        }
+
+        .result-actions .btn:hover {
+            transform: translateY(-2px);
+            /* Elevação no hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            /* Sombra ampliada */
+        }
+
+        /* Cores específicas dos botões */
+        .btn-primary {
+            background: var(--primary);
+            /* Vermelho (#e63946) */
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            /* Vermelho escuro (#b80c17) */
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            /* Cinza (#2c2c2c) */
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-light);
+            /* Cinza claro (#404040) */
+        }
+
+        .btn-success {
+            background: var(--success);
+            /* Verde (#10b981) */
+        }
+
+        .btn-success:hover {
+            background: #0d9c70;
+            /* Verde escuro */
+        }
+
+        /*
+ * Logo
+ * Estilos para o componente de logo, incluindo ícone e texto.
+ */
+        .logo {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente ao centro */
+            gap: 1.2rem;
+            /* Espaçamento entre o ícone e o texto */
+            margin-right: 3rem;
+            /* Espaçamento à direita do logo */
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            /* Tamanho do ícone */
+            color: var(--primary);
+            /* Cor do ícone */
+            filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.6));
+            /* Sombra para o ícone */
+            transition: var(--transition);
+            /* Transição suave em interações */
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.15) rotate(5deg);
+            /* Efeito de hover no ícone */
+        }
+
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            /* Estilo futurista */
+            font-size: 2.2rem;
+            /* Tamanho do título */
+            margin: 0;
+            /* Remove margem */
+            color: var(--primary);
+            /* Cor do título */
+            letter-spacing: 2px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+            text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+            /* Sombra sutil */
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            /* Tamanho do subtítulo */
+            margin: 0.5rem 0 0;
+            /* Espaçamento abaixo do título */
+            color: var(--light-gray);
+            /* Cor do texto secundário */
+            font-weight: 300;
+            /* Peso leve */
+            letter-spacing: 0.5px;
+            /* Espaçamento sutil */
+        }
+
+        /* Badge (opcional, se usado) */
+        .risk-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            background: var(--primary);
+            /* Vermelho sólido */
+            color: white;
+            text-transform: uppercase;
+        }
+
+        /*
+ * Seção de botões
+ */
+        .result-actions {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Empilha os botões verticalmente */
+            align-items: flex-end;
+            /* Alinha à direita */
+            gap: 1rem;
+            /* Espaçamento entre botões */
+            padding: 0.5rem;
+        }
+
+        /* Estilização dos botões */
+        .result-actions .btn {
+            padding: 0.7rem 1.5rem;
+            /* Padding para botões */
+            font-size: 0.9rem;
+            /* Tamanho da fonte */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            color: white;
+            /* Texto branco */
+            border: none;
+            /* Remove borda */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            /* Sombra leve */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Transição suave */
+            width: 160px;
+            /* Largura fixa */
+            text-align: center;
+            /* Centraliza texto */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+        }
+        .result-actions .btn i {
+            margin-right: 0.5rem;
+            /* Espaçamento entre ícone e texto */
+        }
+
+        .result-actions .btn:hover {
+            transform: translateY(-2px);
+            /* Elevação no hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            /* Sombra ampliada */
+        }
+        /* Cores específicas dos botões */
+        .btn-primary {
+            background: var(--primary);
+            /* Vermelho (#e63946) */
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            /* Vermelho escuro (#b80c17) */
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            /* Cinza (#2c2c2c) */
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-light);
+            /* Cinza claro (#404040) */
+        }
+
+        .btn-success {
+            background: var(--success);
+            /* Verde (#10b981) */
+        }
+
+        .btn-success:hover {
+            background: #0d9c70;
+            /* Verde escuro */
+        }
+
+        /*
+ * Layout do Dashboard
+ * Usa CSS Grid para criar um layout de três colunas lado a lado.
+ */
+        .dashboard {
+            display: grid;
+            /* Habilita CSS Grid */
+            grid-template-columns: 1fr 1fr 1fr;
+            /* Três colunas de largura igual */
+            grid-template-rows: auto;
+            /* Altura automática para as linhas */
+            gap: 1.5rem;
+            /* Espaçamento entre os itens do grid */
+            flex-grow: 1;
+            /* Permite que o dashboard ocupe o espaço disponível */
+            min-height: 650px;
+            /* Altura mínima para o dashboard */
+        }
+
+        /*
+ * Media Queries para Responsividade do Dashboard
+ */
+        @media (max-width: 1600px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr 1fr;
+                /* Mantém três colunas */
+                gap: 1rem;
+                /* Reduz o espaçamento */
+            }
+
+            .input-section,
+            .categories-section,
+            .result-section {
+                grid-column: span 1;
+                /* Cada seção ocupa uma coluna */
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                /* Uma única coluna */
+                grid-template-rows: auto;
+                /* Altura automática para todas as linhas */
+                gap: 1.5rem;
+                /* Mantém o espaçamento */
+            }
+
+            .input-section,
+            .categories-section,
+            .result-section {
+                grid-column: span 1;
+                /* Ocupa a única coluna */
+            }
+
+            .header-content {
+                flex-direction: column;
+                /* Empilha em colunas */
+                gap: 2rem;
+                /* Espaçamento vertical */
+                padding: 0 1.5rem;
+            }
+
+            .logo {
+                margin-bottom: 1.5rem;
+                /* Espaçamento abaixo do logo */
+                margin-right: 0;
+                /* Remove margem lateral */
+            }
+
+            .result-actions {
+                align-items: center;
+                /* Centraliza botões */
+                flex-direction: row;
+                /* Alinha horizontalmente */
+                gap: 1rem;
+                /* Espaçamento horizontal */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                /* Reduz o padding do container */
+            }
+
+            .header-content {
+                padding: 0 1.5rem;
+                /* Reduz o padding horizontal do cabeçalho */
+            }
+
+            .logo-text h1 {
+                font-size: 1.7rem;
+                /* Reduz o tamanho do título do logo */
+            }
+
+            .logo-icon {
+                font-size: 1.5rem;
+                /* Reduz o tamanho do ícone do logo */
+            }
+
+            .result-actions {
+                flex-direction: column;
+                /* Volta a empilhar */
+                gap: 0.8rem;
+                /* Espaçamento menor */
+            }
+
+            .result-actions .btn {
+                width: 140px;
+                /* Reduz largura */
+                font-size: 0.85rem;
+                /* Reduz fonte */
+            }
+        }
+
+        /*
+ * Estilos para Cards
+ * Componentes com fundo, bordas e sombras.
+ */
+        .card {
+            background: linear-gradient(145deg, var(--gray-dark) 0%, var(--gray-medium) 100%);
+            /* Gradiente de fundo */
+            border-radius: 16px;
+            /* Bordas arredondadas */
+            padding: 2rem;
+            /* Espaçamento interno */
+            box-shadow: var(--card-shadow);
+            /* Sombra específica para cards */
+            border: var(--card-border);
+            /* Borda sutil */
+            transition: var(--transition);
+            /* Transição para efeitos de hover */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Conteúdo em coluna */
+            height: 100%;
+            /* Ocupa a altura total disponível no grid */
+            position: relative;
+            /* Necessário para o pseudo-elemento ::before */
+            overflow: hidden;
+            /* Esconde conteúdo que exceda as bordas */
+            backdrop-filter: blur(5px);
+            /* Efeito de desfoque no fundo do card (moderno) */
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            /* Efeito de "levantar" ao passar o mouse */
+            box-shadow: 0 12px 28px rgba(230, 57, 70, 0.25);
+            /* Sombra mais intensa no hover */
+        }
+
+        .card::before {
+            content: '';
+            /* Pseudo-elemento para a linha superior */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            /* Gradiente na linha superior */
+            opacity: 0.8;
+        }
+
+        /*
+ * Cabeçalho de Cards com Botões
+ */
+        .card-header {
+            display: flex;
+            /* Habilita Flexbox */
+            justify-content: space-between;
+            /* Distribui espaço entre título e botões */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            margin-bottom: 1.5rem;
+            /* Espaçamento abaixo do cabeçalho */
+            flex-wrap: wrap;
+            /* Permite que os itens quebrem linha em telas menores */
+            gap: 1rem;
+            /* Espaçamento entre os itens */
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            /* Fonte para o título do card */
+            font-size: 1.5rem;
+            /* Tamanho do título */
+            color: var(--primary);
+            /* Cor do título */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 1rem;
+            /* Espaçamento entre ícone e texto */
+            letter-spacing: 1.5px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            position: relative;
+            /* Necessário para o pseudo-elemento ::after */
+            padding-bottom: 0.5rem;
+            /* Padding para a linha inferior */
+            margin: 0;
+            /* Remove margem padrão */
+        }
+
+        .card-title i {
+            font-size: 1.8rem;
+            /* Tamanho do ícone no título */
+            color: var(--primary-light);
+            /* Cor do ícone */
+            filter: drop-shadow(0 0 8px rgba(230, 57, 70, 0.4));
+            /* Sombra para o ícone */
+            transition: transform var(--transition-duration) ease;
+            /* Transição para o ícone */
+        }
+
+        .card-title:hover i {
+            transform: scale(1.1);
+            /* Efeito de escala no ícone ao passar o mouse */
+        }
+
+        /*
+ * Estilos de Formulário
+ */
+        label {
+            display: block;
+            /* Ocupa a largura total */
+            margin-bottom: 0.8rem;
+            /* Espaçamento abaixo do label */
+            font-weight: 500;
+            /* Peso da fonte */
+            color: var(--light);
+            /* Cor do texto */
+            font-size: 1.05rem;
+            /* Tamanho da fonte */
+            letter-spacing: 0.5px;
+            /* Espaçamento entre letras */
+        }
+
+        textarea {
+            width: 100%;
+            /* Ocupa a largura total */
+            height: 10px;
+            /* Altura inicial pequena para flex-grow */
+            min-height: 220px;
+            /* Altura mínima para a área de texto */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada para código */
+            font-size: 1rem;
+            /* Tamanho da fonte */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            resize: vertical;
+            /* Permite redimensionamento vertical */
+            transition: var(--transition);
+            /* Transição suave */
+            line-height: 1.8;
+            /* Espaçamento entre linhas */
+            flex-grow: 1;
+            /* Permite que a textarea cresça para ocupar espaço */
+        }
+
+        textarea:focus {
+            outline: none;
+            /* Remove o outline padrão ao focar */
+            border-color: var(--primary);
+            /* Altera a cor da borda ao focar */
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.25);
+            /* Sombra de foco */
+            background-color: rgba(255, 255, 255, 0.08);
+            /* Fundo ligeiramente mais claro ao focar */
+        }
+
+        /*
+ * Botões de Ação
+ */
+        .buttons {
+            display: flex;
+            /* Habilita Flexbox */
+            gap: 1.5rem;
+            /* Espaçamento entre os botões */
+            margin-top: 2.5rem;
+            /* Margem superior */
+            flex-wrap: wrap;
+            /* Permite que os botões quebrem linha */
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            /* Espaçamento interno */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            font-weight: 600;
+            /* Peso da fonte */
+            cursor: pointer;
+            /* Indica que é clicável */
+            transition: var(--transition);
+            /* Transição suave em interações */
+            border: none;
+            /* Remove borda padrão */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha ícone e texto verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            font-size: 1rem;
+            /* Tamanho da fonte */
+            letter-spacing: 1px;
+            /* Espaçamento entre letras */
+            flex-shrink: 0;
+            /* Previne que o botão diminua */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            position: relative;
+            /* Necessário para o efeito de brilho */
+            overflow: hidden;
+            /* Esconde o brilho inicial */
+            text-decoration: none;
+            /* Remove sublinhado padrão de links que se comportam como botões */
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+            /* Tamanho do ícone no botão */
+        }
+
+        /* Efeito de brilho ao passar o mouse */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            /* Inicia fora da tela */
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            /* Brilho branco semi-transparente */
+            transition: left 0.3s ease;
+            /* Animação de deslizamento */
+        }
+
+        .btn:hover::after {
+            left: 100%;
+            /* Desliza para fora ao passar o mouse */
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            /* Gradiente primário */
+            color: white;
+            /* Cor do texto */
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            /* Inverte o gradiente no hover */
+            transform: translateY(-4px);
+            /* Efeito de "levantar" */
+            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.5);
+            /* Sombra mais intensa */
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Fundo mais claro no hover */
+            transform: translateY(-4px);
+            /* Efeito de "levantar" */
+            border-color: var(--primary-light);
+            /* Borda mais destacada */
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+            /* Sombra no hover */
+        }
+
+        /* Variações de botões de status */
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #2563eb 0%, var(--info) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /*
+ * Contêiner de Resultado
+ */
+        /* (Seção vazia, mantida como original) */
+
+        /*
+ * Indicador de Carregamento (Spinner)
+ */
+        .loading {
+            display: inline-block;
+            /* Ocupa apenas o espaço necessário */
+            width: 22px;
+            height: 22px;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            /* Borda clara */
+            border-radius: 50%;
+            /* Transforma em círculo */
+            border-top-color: var(--primary);
+            /* Parte superior colorida */
+            animation: spin 1s ease-in-out infinite;
+            /* Animação de rotação */
+            margin-right: 12px;
+            /* Espaçamento à direita */
+            vertical-align: middle;
+            /* Alinha verticalmente com o texto */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+                /* Rotação completa */
+            }
+        }
+
+        /*
+ * Estilos de Status (tags)
+ */
+        .status {
+            padding: 0.8rem 1.5rem;
+            /* Espaçamento interno */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            font-size: 0.9rem;
+            /* Tamanho da fonte */
+            font-weight: 500;
+            /* Peso da fonte */
+            margin-top: 2rem;
+            /* Margem superior */
+            display: inline-flex;
+            /* Permite flexbox e se comporta como inline */
+            align-items: center;
+            /* Alinha ícone e texto verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            align-self: flex-start;
+            /* Alinha o item ao início no eixo cruzado */
+            transition: var(--transition);
+            /* Transição suave */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            /* Sombra para profundidade */
+        }
+
+        /* Variações de cor para status */
+        .status-waiting {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .status-processing {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .status-error {
+            background-color: rgba(230, 57, 70, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+        }
+
+        /*
+ * Tags de Tipo
+ */
+        .type-tag {
+            display: inline-block;
+            /* Ocupa apenas o espaço necessário */
+            padding: 0.5rem 1rem;
+            /* Espaçamento interno */
+            border-radius: 20px;
+            /* Bordas bem arredondadas (pill) */
+            font-size: 0.8rem;
+            /* Tamanho da fonte */
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-left: 0.8rem;
+            /* Espaçamento à esquerda */
+            background: var(--gradient);
+            /* Gradiente de fundo */
+            color: white;
+            /* Cor do texto */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            letter-spacing: 1px;
+            /* Espaçamento entre letras */
+            box-shadow: 0 2px 8px rgba(230, 57, 70, 0.3);
+            /* Sombra sutil */
+        }
+
+        /*
+ * Badges de Risco
+ */
+        .risk-badge {
+            display: inline-block;
+            /* Ocupa apenas o espaço necessário */
+            padding: 0.5rem 1rem;
+            /* Espaçamento interno */
+            border-radius: 20px;
+            /* Bordas bem arredondadas (pill) */
+            font-size: 0.8rem;
+            /* Tamanho da fonte */
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-left: 0.7rem;
+            /* Espaçamento à esquerda */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            letter-spacing: 1px;
+            /* Espaçamento entre letras */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .risk-badge:hover {
+            transform: scale(1.08);
+            /* Efeito de escala no hover */
+        }
+
+        /* Variações de cor para badges de risco */
+        .risk-low {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .risk-medium {
+            background-color: var(--warning);
+            color: var(--dark);
+            /* Cor do texto contrastante com amarelo */
+        }
+
+        .risk-high {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .risk-critical {
+            background-color: var(--critical);
+            color: white;
+            animation: pulse 2s infinite;
+            /* Animação de pulsação */
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.85;
+                transform: scale(1.08);
+            }
+        }
+
+        /*
+ * Modal (Caixa de Diálogo)
+ */
+        .modal {
+            position: fixed;
+            /* Fixa na viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Fundo escuro semi-transparente */
+            display: flex;
+            /* Habilita Flexbox */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            align-items: center;
+            /* Centraliza verticalmente */
+            z-index: 1000;
+            /* Garante que fique acima de tudo */
+            opacity: 0;
+            /* Inicialmente invisível */
+            pointer-events: none;
+            /* Não interage com o mouse quando invisível */
+            transition: opacity 0.3s ease;
+            /* Transição suave de opacidade */
+        }
+
+        .modal.active {
+            opacity: 1;
+            /* Torna visível */
+            pointer-events: all;
+            /* Permite interagir com o mouse */
+        }
+
+        .modal-content {
+            background: var(--gray-dark);
+            /* Fundo do conteúdo do modal */
+            padding: 3rem;
+            /* Espaçamento interno */
+            border-radius: 16px;
+            /* Bordas arredondadas */
+            max-width: 600px;
+            /* Largura máxima */
+            width: 90%;
+            /* Ocupa 90% da largura disponível */
+            box-shadow: var(--shadow);
+            /* Sombra */
+            transform: translateY(-30px);
+            /* Começa ligeiramente acima */
+            transition: var(--transition);
+            /* Transição para o efeito de entrada */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-top: 5px solid var(--primary);
+            /* Borda superior de destaque */
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+            /* Desliza para a posição final */
+            opacity: 1;
+            /* Torna o conteúdo visível */
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            /* Fonte para o título do modal */
+            font-size: 1.6rem;
+            /* Tamanho do título */
+            margin-bottom: 1.5rem;
+            /* Margem inferior */
+            color: var(--primary);
+            /* Cor do título */
+            letter-spacing: 1.5px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+        }
+
+        .modal-message {
+            margin-bottom: 2.5rem;
+            /* Margem inferior */
+            line-height: 1.8;
+            /* Espaçamento entre linhas */
+            color: var(--light-gray);
+            /* Cor do texto */
+            font-size: 1.05rem;
+            /* Tamanho da fonte */
+        }
+
+        .modal-close {
+            background: var(--gradient);
+            /* Gradiente de fundo */
+            color: white;
+            /* Cor do texto */
+            font-weight: 600;
+            /* Peso da fonte */
+            padding: 1rem 2rem;
+            /* Espaçamento interno */
+            width: 100%;
+            /* Ocupa a largura total */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            transition: var(--transition);
+            /* Transição suave */
+            border: none;
+            /* Remove a borda padrão do botão */
+            cursor: pointer;
+            /* Indica que é clicável */
+        }
+
+        .modal-close:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            /* Inverte o gradiente no hover */
+            transform: translateY(-4px);
+            /* Efeito de "levantar" */
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.5);
+            /* Sombra mais intensa */
+        }
+
+        /*
+ * Grupos de Tipos (Categorias)
+ */
+        .type-groups {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Itens em coluna */
+            gap: 1.8rem;
+            /* Espaçamento entre os grupos */
+            height: 100%;
+            /* Ocupa a altura total do container pai */
+            overflow-y: auto;
+            /* Adiciona rolagem vertical se o conteúdo for grande */
+            padding-right: 1rem;
+            /* Padding para a barra de rolagem não sobrepor o conteúdo */
+        }
+
+        .type-group {
+            background: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            padding: 1rem;
+            /* Espaçamento interno reduzido */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--primary);
+            /* Borda esquerda de destaque */
+            transition: var(--transition);
+            /* Transição suave */
+            overflow: hidden;
+            /* Garante que o conteúdo colapsado não seja visível */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            /* Sombra sutil */
+        }
+
+        .type-group:hover {
+            transform: translateY(-6px);
+            /* Efeito de "levantar" no hover */
+            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.25);
+            /* Sombra mais intensa */
+        }
+
+        .type-group-title {
+            font-size: 1rem;
+            /* Tamanho da fonte reduzido */
+            margin-bottom: 0.8rem;
+            /* Margem inferior reduzida */
+            color: var(--primary);
+            /* Cor do texto */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            font-weight: 600;
+            /* Peso da fonte */
+            cursor: pointer;
+            /* Indica que é clicável */
+            user-select: none;
+            /* Impede a seleção de texto */
+            justify-content: space-between;
+            /* Distribui espaço entre título e ícone */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+        }
+
+        .type-group-title i {
+            font-size: 1rem;
+            /* Tamanho do ícone reduzido */
+            transition: var(--transition);
+            /* Transição suave para a rotação */
+        }
+
+        .type-group-title .toggle-icon {
+            transform: rotate(-90deg);
+            /* Ícone colapsado por padrão */
+        }
+
+        .type-group.collapsed .type-group-title .toggle-icon {
+            transform: rotate(-90deg);
+            /* Mantém colapsado */
+        }
+
+        .type-group:not(.collapsed) .type-group-title .toggle-icon {
+            transform: rotate(0deg);
+            /* Gira o ícone quando expandido */
+        }
+
+        .type-options {
+            display: grid;
+            /* Habilita CSS Grid */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            /* Colunas responsivas, tamanho mínimo ajustado */
+            gap: 0.8rem;
+            /* Espaçamento entre as opções reduzido */
+            transition: max-height var(--transition-duration) ease-out, opacity var(--transition-duration) ease-out;
+            /* Transição para colapsar */
+            max-height: 0;
+            /* Colapsado por padrão */
+            opacity: 0;
+            /* Invisível por padrão */
+            overflow: hidden;
+            /* Esconde o conteúdo que excede */
+            margin-top: 0;
+            /* Remove margem */
+            padding-top: 0;
+            /* Remove padding */
+            padding-bottom: 0;
+            /* Remove padding */
+        }
+
+        .type-group:not(.collapsed) .type-options {
+            max-height: 400px;
+            /* Altura máxima ajustada para economizar espaço */
+            opacity: 1;
+            /* Torna visível quando expandido */
+            padding-bottom: 1rem;
+            /* Adiciona padding inferior quando expandido */
+        }
+
+        .type-option {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre checkbox e label reduzido */
+            padding: 0.8rem;
+            /* Espaçamento interno reduzido */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            transition: var(--transition);
+            /* Transição suave */
+            cursor: pointer;
+            /* Indica que é clicável */
+            border: 1px solid transparent;
+            /* Borda transparente inicial */
+        }
+
+        .type-option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Fundo mais claro no hover */
+            border-color: var(--primary-light);
+            /* Borda destacada no hover */
+            transform: translateX(5px);
+            /* Efeito de deslizar para a direita */
+        }
+
+        .type-option input[type="checkbox"] {
+            appearance: none;
+            /* Remove a aparência padrão do checkbox */
+            width: 18px;
+            /* Tamanho ajustado */
+            height: 18px;
+            /* Tamanho ajustado */
+            border: 2px solid rgba(230, 57, 70, 0.4);
+            /* Borda do checkbox */
+            border-radius: 5px;
+            /* Bordas arredondadas */
+            transition: var(--transition);
+            /* Transição suave */
+            cursor: pointer;
+            /* Indica que é clicável */
+            position: relative;
+            /* Necessário para o ícone de check */
+            flex-shrink: 0;
+            /* Previne que o checkbox diminua */
+        }
+
+        .type-option input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            /* Fundo primário quando checado */
+            border-color: var(--primary);
+            /* Borda primária quando checado */
+        }
+
+        .type-option input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            /* Ícone de check (Font Awesome) */
+            font-family: 'Font Awesome 6 Free';
+            /* Família de fonte do Font Awesome */
+            font-weight: 900;
+            /* Peso da fonte para ícones sólidos */
+            position: absolute;
+            color: white;
+            /* Cor do ícone */
+            font-size: 0.7rem;
+            /* Tamanho do ícone ajustado */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Centraliza o ícone */
+        }
+
+        .type-option label {
+            margin: 0;
+            /* Remove margem padrão */
+            font-weight: 400;
+            /* Peso da fonte */
+            cursor: pointer;
+            /* Indica que é clicável */
+            font-size: 0.9rem;
+            /* Tamanho da fonte ajustado */
+            color: var(--light);
+            /* Cor do texto */
+            flex-grow: 1;
+            /* Permite que o label ocupe o espaço restante */
+        }
+
+        /*
+ * Estilos da Barra de Rolagem (Webkit)
+ */
+        ::-webkit-scrollbar {
+            width: 12px;
+            /* Largura da barra de rolagem vertical */
+            height: 12px;
+            /* Altura da barra de rolagem horizontal */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-dark);
+            /* Cor do "trilho" da barra de rolagem */
+            border-radius: 6px;
+            /* Bordas arredondadas */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            /* Cor do "polegar" (thumb) da barra de rolagem */
+            border-radius: 6px;
+            /* Bordas arredondadas */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+            /* Cor mais escura no hover */
+        }
+
+        /*
+ * Efeito de Digitação (Typing Effect)
+ */
+        .typing-effect {
+            border-right: 4px solid var(--primary);
+            /* Borda simulando o cursor */
+            animation: blink 0.8s step-end infinite;
+            /* Animação de piscar */
+        }
+
+        @keyframes blink {
+
+            from,
+            to {
+                border-color: transparent;
+                /* Invisível */
+            }
+
+            50% {
+                border-color: var(--primary);
+                /* Visível */
+            }
+        }
+
+        /*
+ * Layout de Seções Específicas no Dashboard
+ */
+        .input-section {
+            grid-column: span 1;
+            /* Ocupa uma coluna */
+        }
+
+        .categories-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .categories-container {
+            flex-grow: 1;
+            /* Ocupa o espaço restante */
+            overflow-y: auto;
+            /* Rolagem vertical */
+            padding-right: 1rem;
+            /* Padding para a barra de rolagem */
+        }
+
+        .result-section {
+            grid-column: span 1;
+            /* Ocupa uma coluna */
+        }
+
+        .template-selector {
+            display: none;
+            /* Exemplo de elemento oculto */
+        }
+
+        /*
+ * Opções Avançadas (Toggleable Section)
+ */
+        .advanced-options {
+            margin-top: 2rem;
+            /* Margem superior */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--info);
+            /* Borda esquerda de destaque */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            /* Sombra sutil */
+        }
+
+        .advanced-options-title {
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-bottom: 1rem;
+            /* Margem inferior */
+            color: var(--info);
+            /* Cor do texto */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            cursor: pointer;
+            /* Indica que é clicável */
+            user-select: none;
+            /* Impede a seleção de texto */
+            justify-content: space-between;
+            /* Distribui espaço entre título e ícone */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+        }
+
+        .advanced-options-content {
+            margin-top: 1rem;
+            /* Margem superior */
+            overflow: hidden;
+            /* Esconde o conteúdo colapsado */
+            transition: max-height var(--transition-duration) ease-out;
+            /* Transição para colapsar */
+            max-height: 600px;
+            /* Altura máxima padrão */
+        }
+
+        .advanced-options.collapsed .advanced-options-content {
+            max-height: 0;
+            /* Colapsa o conteúdo */
+        }
+
+        .advanced-options-title i.fa-chevron-down {
+            transform: rotate(0deg);
+            /* Posição inicial do ícone */
+            transition: var(--transition);
+            /* Transição para a rotação */
+        }
+
+        .advanced-options-title i.fa-chevron-up {
+            transform: rotate(180deg);
+            /* Gira o ícone quando as opções estão abertas */
+            transition: var(--transition);
+            /* Transição para a rotação */
+        }
+
+        /*
+ * Grupos de Formulário
+ */
+        .form-group {
+            margin-bottom: 1.5rem;
+            /* Espaçamento abaixo do grupo */
+        }
+
+        .form-group label {
+            display: block;
+            /* Ocupa a largura total */
+            margin-bottom: 0.5rem;
+            /* Espaçamento abaixo do label */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            /* Ocupa a largura total */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            /* Remove outline padrão */
+            border-color: var(--primary);
+            /* Borda primária ao focar */
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.25);
+            /* Sombra de foco */
+        }
+
+        /*
+ * Contêiner para Indicadores de Compromisso (IoC)
+ */
+        .ioc-container {
+            margin-top: 1.5rem;
+            /* Margem superior */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--warning);
+            /* Borda esquerda de destaque */
+        }
+
+        .ioc-item {
+            display: flex;
+            /* Habilita Flexbox */
+            gap: 0.8rem;
+            /* Espaçamento entre input e botão */
+            margin-bottom: 0.8rem;
+            /* Margem inferior */
+            align-items: center;
+            /* Alinha itens verticalmente */
+        }
+
+        .ioc-item input {
+            flex: 1;
+            /* Ocupa o espaço restante */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+        }
+
+        .ioc-item button {
+            background: var(--gradient);
+            /* Gradiente de fundo */
+            color: white;
+            /* Cor do texto */
+            border: none;
+            /* Remove borda padrão */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            cursor: pointer;
+            /* Indica que é clicável */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Centraliza verticalmente */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            width: 40px;
+            /* Largura fixa */
+            height: 40px;
+            /* Altura fixa */
+            flex-shrink: 0;
+            /* Previne que o botão diminua */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .ioc-item button:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            /* Inverte o gradiente */
+            transform: scale(1.1);
+            /* Efeito de escala */
+        }
+
+        .add-ioc {
+            margin-top: 1rem;
+            /* Margem superior */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px dashed rgba(230, 57, 70, 0.4);
+            /* Borda tracejada */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            cursor: pointer;
+            /* Indica que é clicável */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Centraliza verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            width: 100%;
+            /* Ocupa a largura total */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .add-ioc:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Fundo mais claro no hover */
+            border-color: var(--primary);
+            /* Borda primária no hover */
+            transform: translateY(-3px);
+            /* Efeito de "levantar" */
+        }
+
+        /*
+ * Seções de Relatório
+ */
+        .report-section {
+            margin-bottom: 2.5rem;
+            /* Margem inferior */
+        }
+
+        .report-section-title {
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-bottom: 1rem;
+            /* Margem inferior */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Centraliza verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            color: var(--primary-light);
+            /* Cor do texto */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            font-size: 1.1rem;
+            /* Tamanho da fonte */
+        }
+
+        .report-section-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--primary);
+            /* Borda esquerda de destaque */
+        }
+
+        .evidence-item {
+            margin-bottom: 1rem;
+            /* Margem inferior */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-wrap: wrap;
+            /* Permite que os itens quebrem linha */
+            gap: 0.6rem;
+            /* Espaçamento entre os itens */
+        }
+
+        .evidence-label {
+            font-weight: 500;
+            /* Peso da fonte */
+            min-width: 180px;
+            /* Largura mínima para o label */
+            color: var(--light-gray);
+            /* Cor do texto */
+        }
+
+        .evidence-value {
+            flex: 1;
+            /* Ocupa o espaço restante */
+            word-break: break-all;
+            /* Quebra palavras longas */
+            color: var(--light);
+            /* Cor do texto */
+        }
+
+        .evidence-link {
+            color: var(--cyber-blue);
+            /* Cor do link */
+            text-decoration: none;
+            /* Remove sublinhado padrão */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .evidence-link:hover {
+            color: var(--primary);
+            /* Altera a cor no hover */
+            text-decoration: underline;
+            /* Adiciona sublinhado no hover */
+        }
+
+        .action-item,
+        .recommendation-item {
+            margin-bottom: 0.5rem;
+            /* Margem inferior */
+            position: relative;
+            /* Necessário para o pseudo-elemento */
+            padding-left: 1.8rem;
+            /* Espaçamento para o bullet point */
+        }
+
+        .action-item::before {
+            content: "•";
+            /* Bullet point */
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            /* Cor do bullet point */
+            font-size: 1.3rem;
+            /* Tamanho do bullet point */
+        }
+
+        .recommendation-item::before {
+            content: "•";
+            /* Bullet point */
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            /* Cor do bullet point */
+            font-size: 1.3rem;
+            /* Tamanho do bullet point */
+        }
+
+        /* Utilitários */
+        .hidden {
+            display: none !important;
+            /* Esconde o elemento, forçando a ocultação */
+        }
+    </style>

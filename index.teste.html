@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatorio - Análise Avançada de Incidentes</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /*
+ * Raiz de Variáveis CSS
+ * Define um sistema de design baseado em cores, sombras, gradientes e transições.
+ * Utiliza convenções de nomenclatura claras para facilitar a manutenção.
+ */
+        :root {
+            /* Paleta de Cores Primárias */
+            --primary: #e63946;
+            /* Vermelho vibrante */
+            --primary-dark: #b80c17;
+            /* Vermelho escuro para estados de hover/ativo */
+            --primary-light: #ff9999;
+            /* Tom mais claro para detalhes */
+
+            /* Paleta de Cores Neutras (Modo Escuro) */
+            --dark: #0a0a0a;
+            /* Fundo mais escuro */
+            --gray-dark: #1e1e1e;
+            /* Fundo de seções, cabeçalhos */
+            --gray-medium: #2c2c2c;
+            /* Fundo de cards/componentes */
+            --gray-light: #404040;
+            /* Bordas e divisores */
+            --light: #f1f3f5;
+            /* Cor do texto principal */
+            --light-gray: #d1d5db;
+            /* Cor de texto secundário, placeholders */
+
+            /* Cores de Status e Feedback */
+            --danger: #e63946;
+            /* Erro/Perigo - igual ao primary para consistência visual */
+            --warning: #f59e0b;
+            /* Alerta/Aviso */
+            --success: #10b981;
+            /* Sucesso/Positivo */
+            --info: #3b82f6;
+            /* Informação/Destaque secundário */
+            --cyber-blue: #06b6d4;
+            /* Azul vibrante para links/interatividade */
+            --critical: #7c3aed;
+            /* Risco Crítico - roxo intenso */
+
+            /* Sombras */
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            /* Sombra geral para elementos flutuantes */
+            --card-shadow: 0 6px 24px rgba(230, 57, 70, 0.15);
+            /* Sombra específica para cards */
+
+            /* Gradientes */
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            /* Gradiente primário */
+
+            /* Bordas */
+            --card-border: 1px solid rgba(230, 57, 70, 0.2);
+            /* Borda padrão para cards */
+
+            /* Transições */
+            --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-duration: 0.3s;
+            --transition: all var(--transition-duration) var(--transition-timing);
+            /* Transição padrão para interatividade */
+        }
+
+        /*
+ * Reset Básico
+ * Aplica um reset mínimo para garantir consistência entre navegadores.
+ */
+        * {
+            box-sizing: border-box;
+            /* Garante que padding e border sejam incluídos na largura/altura total */
+            margin: 0;
+            /* Remove margens padrão */
+            padding: 0;
+            /* Remove preenchimentos padrão */
+        }
+
+        /*
+ * Estilos do Corpo da Página (Body)
+ * Configura o layout principal, tipografia e fundo.
+ */
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Fonte principal para o corpo */
+            background: linear-gradient(180deg, var(--dark) 0%, var(--gray-dark) 100%);
+            /* Gradiente de fundo */
+            color: var(--light);
+            /* Cor do texto padrão */
+            line-height: 1.7;
+            /* Espaçamento entre linhas para legibilidade */
+            min-height: 100vh;
+            /* Ocupa a altura total da viewport */
+            display: flex;
+            /* Habilita Flexbox para o layout geral */
+            flex-direction: column;
+            /* Coloca os itens em coluna */
+            overflow-x: hidden;
+            /* Previne rolagem horizontal indesejada */
+            text-rendering: optimizeLegibility;
+            /* Otimiza a renderização do texto */
+            -webkit-font-smoothing: antialiased;
+            /* Suaviza fontes no WebKit */
+            -moz-osx-font-smoothing: grayscale;
+            /* Suaviza fontes no Firefox (macOS) */
+        }
+
+        /*
+ * Container Principal
+ * Centraliza o conteúdo e define o padding responsivo.
+ */
+        .container {
+            max-width: 1800px;
+            /* Largura máxima para o conteúdo */
+            margin: 0 auto;
+            /* Centraliza horizontalmente */
+            padding: 2.5rem;
+            /* Padding padrão em todos os lados */
+            flex-grow: 1;
+            /* Permite que o container ocupe o espaço disponível */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Conteúdo em coluna */
+        }
+
+        /*
+ * Cabeçalho (Header)
+ * Estilos para a seção superior da página.
+ */
+        /*
+ * Cabeçalho (Header)
+ * Estilos para a seção superior da página.
+ */
+        header {
+            background: var(--gray-dark);
+            /* Cor de fundo do cabeçalho */
+            padding: 1.5rem 2.5rem;
+            /* Padding interno ajustado */
+            margin-bottom: 2.5rem;
+            /* Espaçamento abaixo do cabeçalho */
+            border-bottom: 2px solid var(--primary);
+            /* Borda inferior de destaque */
+            box-shadow: var(--shadow);
+            /* Sombra para profundidade */
+            position: relative;
+            /* Necessário para z-index */
+            z-index: 10;
+            /* Garante que o cabeçalho fique sobre outros elementos */
+            min-height: 120px;
+            /* Altura mínima para garantir espaço */
+        }
+
+        .header-content {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: flex-start;
+            /* Alinha itens no topo */
+            justify-content: flex-start;
+            /* Alinha à esquerda, controlando espaçamento manualmente */
+            max-width: 1800px;
+            /* Largura máxima do conteúdo do cabeçalho */
+            margin: 100 auto;
+            /* Centraliza */
+            padding: 0;
+            /* Remove padding interno, já no header */
+            gap: 4rem;
+            /* Espaçamento maior entre logo e botões */
+        }
+
+        .logo {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente ao centro */
+            gap: 1.2rem;
+            /* Espaçamento entre o ícone e o texto */
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            /* Tamanho do ícone */
+            color: var(--primary);
+            /* Cor do ícone */
+            filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.6));
+            /* Sombra para o ícone */
+            transition: var(--transition);
+            /* Transição suave em interações */
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.15) rotate(5deg);
+            /* Efeito de hover no ícone */
+        }
+
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            /* Estilo futurista */
+            font-size: 2.2rem;
+            /* Tamanho do título */
+            margin: 0;
+            /* Remove margem */
+            color: var(--primary);
+            /* Cor do título */
+            letter-spacing: 2px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+            text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+            /* Sombra sutil */
+            display: flex;
+            /* Habilita Flexbox para alinhar o badge */
+            align-items: center;
+            /* Alinha verticalmente */
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            /* Tamanho do subtítulo */
+            margin: 0.5rem 0 0;
+            /* Espaçamento abaixo do título */
+            color: var(--light-gray);
+            /* Cor do texto secundário */
+            font-weight: 300;
+            /* Peso leve */
+            letter-spacing: 0.5px;
+            /* Espaçamento sutil */
+        }
+
+        /* Badge (opcional, ajustado para risk-critical) */
+        .risk-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            background: var(--critical);
+            /* Cor do badge risk-critical */
+            color: white;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+            /* Animação de pulsação */
+        }
+
+        .risk-critical {
+            background-color: var(--critical);
+            /* Garante consistência */
+            color: white;
+        }
+
+        /*
+ * Seção de botões
+ */
+        .result-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+            padding: 0.5rem;
+        }
+
+        .result-actions .btn {
+            padding: 0.7rem 1.5rem;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            color: white;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 160px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .result-actions .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .result-actions .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Cores específicas dos botões */
+        .btn-primary {
+            background: var(--primary);
+            /* Vermelho (#e63946) */
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            /* Vermelho escuro (#b80c17) */
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            /* Cinza (#2c2c2c) */
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-light);
+            /* Cinza claro (#404040) */
+        }
+
+        .btn-success {
+            background: var(--success);
+            /* Verde (#10b981) */
+        }
+
+        .btn-success:hover {
+            background: #0d9c70;
+            /* Verde escuro */
+        }
+
+        /*
+ * Seção de botões
+ */
+        .result-actions {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Empilha os botões verticalmente */
+            align-items: flex-end;
+            /* Alinha à direita */
+            gap: 1rem;
+            /* Espaçamento entre botões */
+            padding: 0.5rem;
+        }
+
+        /* Estilização dos botões */
+        .result-actions .btn {
+            padding: 0.7rem 1.5rem;
+            /* Padding para botões */
+            font-size: 0.9rem;
+            /* Tamanho da fonte */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            color: white;
+            /* Texto branco */
+            border: none;
+            /* Remove borda */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            /* Sombra leve */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Transição suave */
+            width: 160px;
+            /* Largura fixa */
+            text-align: center;
+            /* Centraliza texto */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+        }
+
+        .result-actions .btn i {
+            margin-right: 0.5rem;
+            /* Espaçamento entre ícone e texto */
+        }
+
+        .result-actions .btn:hover {
+            transform: translateY(-2px);
+            /* Elevação no hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            /* Sombra ampliada */
+        }
+
+        /* Cores específicas dos botões */
+        .btn-primary {
+            background: var(--primary);
+            /* Vermelho (#e63946) */
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            /* Vermelho escuro (#b80c17) */
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            /* Cinza (#2c2c2c) */
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-light);
+            /* Cinza claro (#404040) */
+        }
+
+        .btn-success {
+            background: var(--success);
+            /* Verde (#10b981) */
+        }
+
+        .btn-success:hover {
+            background: #0d9c70;
+            /* Verde escuro */
+        }
+
+        /*
+ * Logo
+ * Estilos para o componente de logo, incluindo ícone e texto.
+ */
+        .logo {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente ao centro */
+            gap: 1.2rem;
+            /* Espaçamento entre o ícone e o texto */
+            margin-right: 3rem;
+            /* Espaçamento à direita do logo */
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            /* Tamanho do ícone */
+            color: var(--primary);
+            /* Cor do ícone */
+            filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.6));
+            /* Sombra para o ícone */
+            transition: var(--transition);
+            /* Transição suave em interações */
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.15) rotate(5deg);
+            /* Efeito de hover no ícone */
+        }
+
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            /* Estilo futurista */
+            font-size: 2.2rem;
+            /* Tamanho do título */
+            margin: 0;
+            /* Remove margem */
+            color: var(--primary);
+            /* Cor do título */
+            letter-spacing: 2px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+            text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+            /* Sombra sutil */
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            /* Tamanho do subtítulo */
+            margin: 0.5rem 0 0;
+            /* Espaçamento abaixo do título */
+            color: var(--light-gray);
+            /* Cor do texto secundário */
+            font-weight: 300;
+            /* Peso leve */
+            letter-spacing: 0.5px;
+            /* Espaçamento sutil */
+        }
+
+        /* Badge (opcional, se usado) */
+        .risk-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            background: var(--primary);
+            /* Vermelho sólido */
+            color: white;
+            text-transform: uppercase;
+        }
+
+        /*
+ * Seção de botões
+ */
+        .result-actions {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Empilha os botões verticalmente */
+            align-items: flex-end;
+            /* Alinha à direita */
+            gap: 1rem;
+            /* Espaçamento entre botões */
+            padding: 0.5rem;
+        }
+
+        /* Estilização dos botões */
+        .result-actions .btn {
+            padding: 0.7rem 1.5rem;
+            /* Padding para botões */
+            font-size: 0.9rem;
+            /* Tamanho da fonte */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            color: white;
+            /* Texto branco */
+            border: none;
+            /* Remove borda */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            /* Sombra leve */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Transição suave */
+            width: 160px;
+            /* Largura fixa */
+            text-align: center;
+            /* Centraliza texto */
+            text-transform: uppercase;
+            /* Letras maiúsculas */
+        }
+
+        .result-actions .btn i {
+            margin-right: 0.5rem;
+            /* Espaçamento entre ícone e texto */
+        }
+
+        .result-actions .btn:hover {
+            transform: translateY(-2px);
+            /* Elevação no hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            /* Sombra ampliada */
+        }
+
+        /* Cores específicas dos botões */
+        .btn-primary {
+            background: var(--primary);
+            /* Vermelho (#e63946) */
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            /* Vermelho escuro (#b80c17) */
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            /* Cinza (#2c2c2c) */
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-light);
+            /* Cinza claro (#404040) */
+        }
+
+        .btn-success {
+            background: var(--success);
+            /* Verde (#10b981) */
+        }
+
+        .btn-success:hover {
+            background: #0d9c70;
+            /* Verde escuro */
+        }
+
+        /*
+ * Layout do Dashboard
+ * Usa CSS Grid para criar um layout de três colunas lado a lado.
+ */
+        .dashboard {
+            display: grid;
+            /* Habilita CSS Grid */
+            grid-template-columns: 1fr 1fr 1fr;
+            /* Três colunas de largura igual */
+            grid-template-rows: auto;
+            /* Altura automática para as linhas */
+            gap: 1.5rem;
+            /* Espaçamento entre os itens do grid */
+            flex-grow: 1;
+            /* Permite que o dashboard ocupe o espaço disponível */
+            min-height: 650px;
+            /* Altura mínima para o dashboard */
+        }
+
+        /*
+ * Media Queries para Responsividade do Dashboard
+ */
+        @media (max-width: 1600px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr 1fr;
+                /* Mantém três colunas */
+                gap: 1rem;
+                /* Reduz o espaçamento */
+            }
+
+            .input-section,
+            .categories-section,
+            .result-section {
+                grid-column: span 1;
+                /* Cada seção ocupa uma coluna */
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                /* Uma única coluna */
+                grid-template-rows: auto;
+                /* Altura automática para todas as linhas */
+                gap: 1.5rem;
+                /* Mantém o espaçamento */
+            }
+
+            .input-section,
+            .categories-section,
+            .result-section {
+                grid-column: span 1;
+                /* Ocupa a única coluna */
+            }
+
+            .header-content {
+                flex-direction: column;
+                /* Empilha em colunas */
+                gap: 2rem;
+                /* Espaçamento vertical */
+                padding: 0 1.5rem;
+            }
+
+            .logo {
+                margin-bottom: 1.5rem;
+                /* Espaçamento abaixo do logo */
+                margin-right: 0;
+                /* Remove margem lateral */
+            }
+
+            .result-actions {
+                align-items: center;
+                /* Centraliza botões */
+                flex-direction: row;
+                /* Alinha horizontalmente */
+                gap: 1rem;
+                /* Espaçamento horizontal */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                /* Reduz o padding do container */
+            }
+
+            .header-content {
+                padding: 0 1.5rem;
+                /* Reduz o padding horizontal do cabeçalho */
+            }
+
+            .logo-text h1 {
+                font-size: 1.7rem;
+                /* Reduz o tamanho do título do logo */
+            }
+
+            .logo-icon {
+                font-size: 1.5rem;
+                /* Reduz o tamanho do ícone do logo */
+            }
+
+            .result-actions {
+                flex-direction: column;
+                /* Volta a empilhar */
+                gap: 0.8rem;
+                /* Espaçamento menor */
+            }
+
+            .result-actions .btn {
+                width: 140px;
+                /* Reduz largura */
+                font-size: 0.85rem;
+                /* Reduz fonte */
+            }
+        }
+
+        /*
+ * Estilos para Cards
+ * Componentes com fundo, bordas e sombras.
+ */
+        .card {
+            background: linear-gradient(145deg, var(--gray-dark) 0%, var(--gray-medium) 100%);
+            /* Gradiente de fundo */
+            border-radius: 16px;
+            /* Bordas arredondadas */
+            padding: 2rem;
+            /* Espaçamento interno */
+            box-shadow: var(--card-shadow);
+            /* Sombra específica para cards */
+            border: var(--card-border);
+            /* Borda sutil */
+            transition: var(--transition);
+            /* Transição para efeitos de hover */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Conteúdo em coluna */
+            height: 100%;
+            /* Ocupa a altura total disponível no grid */
+            position: relative;
+            /* Necessário para o pseudo-elemento ::before */
+            overflow: hidden;
+            /* Esconde conteúdo que exceda as bordas */
+            backdrop-filter: blur(5px);
+            /* Efeito de desfoque no fundo do card (moderno) */
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            /* Efeito de "levantar" ao passar o mouse */
+            box-shadow: 0 12px 28px rgba(230, 57, 70, 0.25);
+            /* Sombra mais intensa no hover */
+        }
+
+        .card::before {
+            content: '';
+            /* Pseudo-elemento para a linha superior */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            /* Gradiente na linha superior */
+            opacity: 0.8;
+        }
+
+        /*
+ * Cabeçalho de Cards com Botões
+ */
+        .card-header {
+            display: flex;
+            /* Habilita Flexbox */
+            justify-content: space-between;
+            /* Distribui espaço entre título e botões */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            margin-bottom: 1.5rem;
+            /* Espaçamento abaixo do cabeçalho */
+            flex-wrap: wrap;
+            /* Permite que os itens quebrem linha em telas menores */
+            gap: 1rem;
+            /* Espaçamento entre os itens */
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            /* Fonte para o título do card */
+            font-size: 1.5rem;
+            /* Tamanho do título */
+            color: var(--primary);
+            /* Cor do título */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 1rem;
+            /* Espaçamento entre ícone e texto */
+            letter-spacing: 1.5px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            position: relative;
+            /* Necessário para o pseudo-elemento ::after */
+            padding-bottom: 0.5rem;
+            /* Padding para a linha inferior */
+            margin: 0;
+            /* Remove margem padrão */
+        }
+
+        .card-title i {
+            font-size: 1.8rem;
+            /* Tamanho do ícone no título */
+            color: var(--primary-light);
+            /* Cor do ícone */
+            filter: drop-shadow(0 0 8px rgba(230, 57, 70, 0.4));
+            /* Sombra para o ícone */
+            transition: transform var(--transition-duration) ease;
+            /* Transição para o ícone */
+        }
+
+        .card-title:hover i {
+            transform: scale(1.1);
+            /* Efeito de escala no ícone ao passar o mouse */
+        }
+
+        /*
+ * Estilos de Formulário
+ */
+        label {
+            display: block;
+            /* Ocupa a largura total */
+            margin-bottom: 0.8rem;
+            /* Espaçamento abaixo do label */
+            font-weight: 500;
+            /* Peso da fonte */
+            color: var(--light);
+            /* Cor do texto */
+            font-size: 1.05rem;
+            /* Tamanho da fonte */
+            letter-spacing: 0.5px;
+            /* Espaçamento entre letras */
+        }
+
+        textarea {
+            width: 100%;
+            /* Ocupa a largura total */
+            height: 10px;
+            /* Altura inicial pequena para flex-grow */
+            min-height: 220px;
+            /* Altura mínima para a área de texto */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada para código */
+            font-size: 1rem;
+            /* Tamanho da fonte */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            resize: vertical;
+            /* Permite redimensionamento vertical */
+            transition: var(--transition);
+            /* Transição suave */
+            line-height: 1.8;
+            /* Espaçamento entre linhas */
+            flex-grow: 1;
+            /* Permite que a textarea cresça para ocupar espaço */
+        }
+
+        textarea:focus {
+            outline: none;
+            /* Remove o outline padrão ao focar */
+            border-color: var(--primary);
+            /* Altera a cor da borda ao focar */
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.25);
+            /* Sombra de foco */
+            background-color: rgba(255, 255, 255, 0.08);
+            /* Fundo ligeiramente mais claro ao focar */
+        }
+
+        /*
+ * Botões de Ação
+ */
+        .buttons {
+            display: flex;
+            /* Habilita Flexbox */
+            gap: 1.5rem;
+            /* Espaçamento entre os botões */
+            margin-top: 2.5rem;
+            /* Margem superior */
+            flex-wrap: wrap;
+            /* Permite que os botões quebrem linha */
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            /* Espaçamento interno */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            font-weight: 600;
+            /* Peso da fonte */
+            cursor: pointer;
+            /* Indica que é clicável */
+            transition: var(--transition);
+            /* Transição suave em interações */
+            border: none;
+            /* Remove borda padrão */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha ícone e texto verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            font-size: 1rem;
+            /* Tamanho da fonte */
+            letter-spacing: 1px;
+            /* Espaçamento entre letras */
+            flex-shrink: 0;
+            /* Previne que o botão diminua */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            position: relative;
+            /* Necessário para o efeito de brilho */
+            overflow: hidden;
+            /* Esconde o brilho inicial */
+            text-decoration: none;
+            /* Remove sublinhado padrão de links que se comportam como botões */
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+            /* Tamanho do ícone no botão */
+        }
+
+        /* Efeito de brilho ao passar o mouse */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            /* Inicia fora da tela */
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            /* Brilho branco semi-transparente */
+            transition: left 0.3s ease;
+            /* Animação de deslizamento */
+        }
+
+        .btn:hover::after {
+            left: 100%;
+            /* Desliza para fora ao passar o mouse */
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            /* Gradiente primário */
+            color: white;
+            /* Cor do texto */
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            /* Inverte o gradiente no hover */
+            transform: translateY(-4px);
+            /* Efeito de "levantar" */
+            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.5);
+            /* Sombra mais intensa */
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Fundo mais claro no hover */
+            transform: translateY(-4px);
+            /* Efeito de "levantar" */
+            border-color: var(--primary-light);
+            /* Borda mais destacada */
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+            /* Sombra no hover */
+        }
+
+        /* Variações de botões de status */
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #2563eb 0%, var(--info) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /*
+ * Contêiner de Resultado
+ */
+        * Contêiner de Resultado */ .result-container {
+            height: 100%;
+            /* Ocupa a altura total do card */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Conteúdo em coluna */
+            position: relative;
+            /* Necessário para posicionar .result-actions */
+        }
+
+        .result-actions {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            z-index: 10;
+        }
+
+        .result-actions .btn {
+            padding: 0.7rem 1.2rem;
+            /* Padding menor para botões de ação */
+            font-size: 0.9rem;
+            /* Fonte menor */
+            border-radius: 8px;
+            /* Bordas levemente menores */
+        }
+
+        pre {
+            padding-top: 4rem;
+            /* Padding superior para acomodar .result-actions */
+            white-space: pre-wrap;
+            /* Preserva espaços e quebra linhas longas */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            padding: 2rem;
+            /* Espaçamento interno */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            flex-grow: 1;
+            /* Permite que o pre ocupe o espaço disponível */
+            overflow-y: auto;
+            /* Adiciona rolagem vertical se o conteúdo for grande */
+            margin-top: 0;
+            /* Remove margem superior padrão */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            color: var(--light);
+            /* Cor do texto */
+            line-height: 1.8;
+            /* Espaçamento entre linhas */
+            min-height: 220px;
+            /* Altura mínima */
+        }
+
+        .loading {
+            display: inline-block;
+            /* Ocupa apenas o espaço necessário */
+            width: 22px;
+            height: 22px;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            /* Borda clara */
+            border-radius: 50%;
+            /* Transforma em círculo */
+            border-top-color: var(--primary);
+            /* Parte superior colorida */
+            animation: spin 1s ease-in-out infinite;
+            /* Animação de rotação */
+            margin-right: 12px;
+            /* Espaçamento à direita */
+            vertical-align: middle;
+            /* Alinha verticalmente com o texto */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+                /* Rotação completa */
+            }
+        }
+
+        /*
+ * Estilos de Status (tags)
+ */
+        .status {
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            align-self: flex-start;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Variações de cor para status */
+        .status-waiting {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .status-processing {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .status-error {
+            background-color: rgba(230, 57, 70, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+        }
+
+        /*
+ * Tags de Tipo
+ */
+        .type-tag {
+            display: inline-block;
+            /* Ocupa apenas o espaço necessário */
+            padding: 0.5rem 1rem;
+            /* Espaçamento interno */
+            border-radius: 20px;
+            /* Bordas bem arredondadas (pill) */
+            font-size: 0.8rem;
+            /* Tamanho da fonte */
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-left: 0.8rem;
+            /* Espaçamento à esquerda */
+            background: var(--gradient);
+            /* Gradiente de fundo */
+            color: white;
+            /* Cor do texto */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            letter-spacing: 1px;
+            /* Espaçamento entre letras */
+            box-shadow: 0 2px 8px rgba(230, 57, 70, 0.3);
+            /* Sombra sutil */
+        }
+
+        /*
+ * Badges de Risco
+ */
+        .risk-badge {
+            display: inline-block;
+            /* Ocupa apenas o espaço necessário */
+            padding: 0.5rem 1rem;
+            /* Espaçamento interno */
+            border-radius: 20px;
+            /* Bordas bem arredondadas (pill) */
+            font-size: 0.8rem;
+            /* Tamanho da fonte */
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-left: 0.7rem;
+            /* Espaçamento à esquerda */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            letter-spacing: 1px;
+            /* Espaçamento entre letras */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .risk-badge:hover {
+            transform: scale(1.08);
+            /* Efeito de escala no hover */
+        }
+
+        /* Variações de cor para badges de risco */
+        .risk-low {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .risk-medium {
+            background-color: var(--warning);
+            color: var(--dark);
+            /* Cor do texto contrastante com amarelo */
+        }
+
+        .risk-high {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .risk-critical {
+            background-color: var(--critical);
+            color: white;
+            animation: pulse 2s infinite;
+            /* Animação de pulsação */
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.85;
+                transform: scale(1.08);
+            }
+        }
+
+        /*
+ * Modal (Caixa de Diálogo)
+ */
+        .modal {
+            position: fixed;
+            /* Fixa na viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Fundo escuro semi-transparente */
+            display: flex;
+            /* Habilita Flexbox */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            align-items: center;
+            /* Centraliza verticalmente */
+            z-index: 1000;
+            /* Garante que fique acima de tudo */
+            opacity: 0;
+            /* Inicialmente invisível */
+            pointer-events: none;
+            /* Não interage com o mouse quando invisível */
+            transition: opacity 0.3s ease;
+            /* Transição suave de opacidade */
+        }
+
+        .modal.active {
+            opacity: 1;
+            /* Torna visível */
+            pointer-events: all;
+            /* Permite interagir com o mouse */
+        }
+
+        .modal-content {
+            background: var(--gray-dark);
+            /* Fundo do conteúdo do modal */
+            padding: 3rem;
+            /* Espaçamento interno */
+            border-radius: 16px;
+            /* Bordas arredondadas */
+            max-width: 600px;
+            /* Largura máxima */
+            width: 90%;
+            /* Ocupa 90% da largura disponível */
+            box-shadow: var(--shadow);
+            /* Sombra */
+            transform: translateY(-30px);
+            /* Começa ligeiramente acima */
+            transition: var(--transition);
+            /* Transição para o efeito de entrada */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-top: 5px solid var(--primary);
+            /* Borda superior de destaque */
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+            /* Desliza para a posição final */
+            opacity: 1;
+            /* Torna o conteúdo visível */
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            /* Fonte para o título do modal */
+            font-size: 1.6rem;
+            /* Tamanho do título */
+            margin-bottom: 1.5rem;
+            /* Margem inferior */
+            color: var(--primary);
+            /* Cor do título */
+            letter-spacing: 1.5px;
+            /* Espaçamento entre letras */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+        }
+
+        .modal-message {
+            margin-bottom: 2.5rem;
+            /* Margem inferior */
+            line-height: 1.8;
+            /* Espaçamento entre linhas */
+            color: var(--light-gray);
+            /* Cor do texto */
+            font-size: 1.05rem;
+            /* Tamanho da fonte */
+        }
+
+        .modal-close {
+            background: var(--gradient);
+            /* Gradiente de fundo */
+            color: white;
+            /* Cor do texto */
+            font-weight: 600;
+            /* Peso da fonte */
+            padding: 1rem 2rem;
+            /* Espaçamento interno */
+            width: 100%;
+            /* Ocupa a largura total */
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            transition: var(--transition);
+            /* Transição suave */
+            border: none;
+            /* Remove a borda padrão do botão */
+            cursor: pointer;
+            /* Indica que é clicável */
+        }
+
+        .modal-close:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            /* Inverte o gradiente no hover */
+            transform: translateY(-4px);
+            /* Efeito de "levantar" */
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.5);
+            /* Sombra mais intensa */
+        }
+
+        /*
+ * Grupos de Tipos (Categorias)
+ */
+        .type-groups {
+            display: flex;
+            /* Habilita Flexbox */
+            flex-direction: column;
+            /* Itens em coluna */
+            gap: 1.8rem;
+            /* Espaçamento entre os grupos */
+            height: 100%;
+            /* Ocupa a altura total do container pai */
+            overflow-y: auto;
+            /* Adiciona rolagem vertical se o conteúdo for grande */
+            padding-right: 1rem;
+            /* Padding para a barra de rolagem não sobrepor o conteúdo */
+        }
+
+        .type-group {
+            background: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            padding: 1rem;
+            /* Espaçamento interno reduzido */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--primary);
+            /* Borda esquerda de destaque */
+            transition: var(--transition);
+            /* Transição suave */
+            overflow: hidden;
+            /* Garante que o conteúdo colapsado não seja visível */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            /* Sombra sutil */
+        }
+
+        .type-group:hover {
+            transform: translateY(-6px);
+            /* Efeito de "levantar" no hover */
+            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.25);
+            /* Sombra mais intensa */
+        }
+
+        .type-group-title {
+            font-size: 1rem;
+            /* Tamanho da fonte reduzido */
+            margin-bottom: 0.8rem;
+            /* Margem inferior reduzida */
+            color: var(--primary);
+            /* Cor do texto */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            font-weight: 600;
+            /* Peso da fonte */
+            cursor: pointer;
+            /* Indica que é clicável */
+            user-select: none;
+            /* Impede a seleção de texto */
+            justify-content: space-between;
+            /* Distribui espaço entre título e ícone */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+        }
+
+        .type-group-title i {
+            font-size: 1rem;
+            /* Tamanho do ícone reduzido */
+            transition: var(--transition);
+            /* Transição suave para a rotação */
+        }
+
+        .type-group-title .toggle-icon {
+            transform: rotate(-90deg);
+            /* Ícone colapsado por padrão */
+        }
+
+        .type-group.collapsed .type-group-title .toggle-icon {
+            transform: rotate(-90deg);
+            /* Mantém colapsado */
+        }
+
+        .type-group:not(.collapsed) .type-group-title .toggle-icon {
+            transform: rotate(0deg);
+            /* Gira o ícone quando expandido */
+        }
+
+        .type-options {
+            display: grid;
+            /* Habilita CSS Grid */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            /* Colunas responsivas, tamanho mínimo ajustado */
+            gap: 0.8rem;
+            /* Espaçamento entre as opções reduzido */
+            transition: max-height var(--transition-duration) ease-out, opacity var(--transition-duration) ease-out;
+            /* Transição para colapsar */
+            max-height: 0;
+            /* Colapsado por padrão */
+            opacity: 0;
+            /* Invisível por padrão */
+            overflow: hidden;
+            /* Esconde o conteúdo que excede */
+            margin-top: 0;
+            /* Remove margem */
+            padding-top: 0;
+            /* Remove padding */
+            padding-bottom: 0;
+            /* Remove padding */
+        }
+
+        .type-group:not(.collapsed) .type-options {
+            max-height: 400px;
+            /* Altura máxima ajustada para economizar espaço */
+            opacity: 1;
+            /* Torna visível quando expandido */
+            padding-bottom: 1rem;
+            /* Adiciona padding inferior quando expandido */
+        }
+
+        .type-option {
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre checkbox e label reduzido */
+            padding: 0.8rem;
+            /* Espaçamento interno reduzido */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            transition: var(--transition);
+            /* Transição suave */
+            cursor: pointer;
+            /* Indica que é clicável */
+            border: 1px solid transparent;
+            /* Borda transparente inicial */
+        }
+
+        .type-option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Fundo mais claro no hover */
+            border-color: var(--primary-light);
+            /* Borda destacada no hover */
+            transform: translateX(5px);
+            /* Efeito de deslizar para a direita */
+        }
+
+        .type-option input[type="checkbox"] {
+            appearance: none;
+            /* Remove a aparência padrão do checkbox */
+            width: 18px;
+            /* Tamanho ajustado */
+            height: 18px;
+            /* Tamanho ajustado */
+            border: 2px solid rgba(230, 57, 70, 0.4);
+            /* Borda do checkbox */
+            border-radius: 5px;
+            /* Bordas arredondadas */
+            transition: var(--transition);
+            /* Transição suave */
+            cursor: pointer;
+            /* Indica que é clicável */
+            position: relative;
+            /* Necessário para o ícone de check */
+            flex-shrink: 0;
+            /* Previne que o checkbox diminua */
+        }
+
+        .type-option input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            /* Fundo primário quando checado */
+            border-color: var(--primary);
+            /* Borda primária quando checado */
+        }
+
+        .type-option input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            /* Ícone de check (Font Awesome) */
+            font-family: 'Font Awesome 6 Free';
+            /* Família de fonte do Font Awesome */
+            font-weight: 900;
+            /* Peso da fonte para ícones sólidos */
+            position: absolute;
+            color: white;
+            /* Cor do ícone */
+            font-size: 0.7rem;
+            /* Tamanho do ícone ajustado */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Centraliza o ícone */
+        }
+
+        .type-option label {
+            margin: 0;
+            /* Remove margem padrão */
+            font-weight: 400;
+            /* Peso da fonte */
+            cursor: pointer;
+            /* Indica que é clicável */
+            font-size: 0.9rem;
+            /* Tamanho da fonte ajustado */
+            color: var(--light);
+            /* Cor do texto */
+            flex-grow: 1;
+            /* Permite que o label ocupe o espaço restante */
+        }
+
+        /*
+ * Estilos da Barra de Rolagem (Webkit)
+ */
+        ::-webkit-scrollbar {
+            width: 12px;
+            /* Largura da barra de rolagem vertical */
+            height: 12px;
+            /* Altura da barra de rolagem horizontal */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-dark);
+            /* Cor do "trilho" da barra de rolagem */
+            border-radius: 6px;
+            /* Bordas arredondadas */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            /* Cor do "polegar" (thumb) da barra de rolagem */
+            border-radius: 6px;
+            /* Bordas arredondadas */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+            /* Cor mais escura no hover */
+        }
+
+        /*
+ * Efeito de Digitação (Typing Effect)
+ */
+        .typing-effect {
+            border-right: 4px solid var(--primary);
+            /* Borda simulando o cursor */
+            animation: blink 0.8s step-end infinite;
+            /* Animação de piscar */
+        }
+
+        @keyframes blink {
+
+            from,
+            to {
+                border-color: transparent;
+                /* Invisível */
+            }
+
+            50% {
+                border-color: var(--primary);
+                /* Visível */
+            }
+        }
+
+        /*
+ * Layout de Seções Específicas no Dashboard
+ */
+        .input-section {
+            grid-column: span 1;
+            /* Ocupa uma coluna */
+        }
+
+        .categories-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .categories-container {
+            flex-grow: 1;
+            /* Ocupa o espaço restante */
+            overflow-y: auto;
+            /* Rolagem vertical */
+            padding-right: 1rem;
+            /* Padding para a barra de rolagem */
+        }
+
+        .result-section {
+            grid-column: span 1;
+            /* Ocupa uma coluna */
+        }
+
+        .template-selector {
+            display: none;
+            /* Exemplo de elemento oculto */
+        }
+
+        /*
+ * Opções Avançadas (Toggleable Section)
+ */
+        .advanced-options {
+            margin-top: 2rem;
+            /* Margem superior */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--info);
+            /* Borda esquerda de destaque */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            /* Sombra sutil */
+        }
+
+        .advanced-options-title {
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-bottom: 1rem;
+            /* Margem inferior */
+            color: var(--info);
+            /* Cor do texto */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Alinha itens verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            cursor: pointer;
+            /* Indica que é clicável */
+            user-select: none;
+            /* Impede a seleção de texto */
+            justify-content: space-between;
+            /* Distribui espaço entre título e ícone */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+        }
+
+        .advanced-options-content {
+            margin-top: 1rem;
+            /* Margem superior */
+            overflow: hidden;
+            /* Esconde o conteúdo colapsado */
+            transition: max-height var(--transition-duration) ease-out;
+            /* Transição para colapsar */
+            max-height: 600px;
+            /* Altura máxima padrão */
+        }
+
+        .advanced-options.collapsed .advanced-options-content {
+            max-height: 0;
+            /* Colapsa o conteúdo */
+        }
+
+        .advanced-options-title i.fa-chevron-down {
+            transform: rotate(0deg);
+            /* Posição inicial do ícone */
+            transition: var(--transition);
+            /* Transição para a rotação */
+        }
+
+        .advanced-options-title i.fa-chevron-up {
+            transform: rotate(180deg);
+            /* Gira o ícone quando as opções estão abertas */
+            transition: var(--transition);
+            /* Transição para a rotação */
+        }
+
+        /*
+ * Grupos de Formulário
+ */
+        .form-group {
+            margin-bottom: 1.5rem;
+            /* Espaçamento abaixo do grupo */
+        }
+
+        .form-group label {
+            display: block;
+            /* Ocupa a largura total */
+            margin-bottom: 0.5rem;
+            /* Espaçamento abaixo do label */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            /* Ocupa a largura total */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            /* Remove outline padrão */
+            border-color: var(--primary);
+            /* Borda primária ao focar */
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.25);
+            /* Sombra de foco */
+        }
+
+        /*
+ * Contêiner para Indicadores de Compromisso (IoC)
+ */
+        .ioc-container {
+            margin-top: 1.5rem;
+            /* Margem superior */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--warning);
+            /* Borda esquerda de destaque */
+        }
+
+        .ioc-item {
+            display: flex;
+            /* Habilita Flexbox */
+            gap: 0.8rem;
+            /* Espaçamento entre input e botão */
+            margin-bottom: 0.8rem;
+            /* Margem inferior */
+            align-items: center;
+            /* Alinha itens verticalmente */
+        }
+
+        .ioc-item input {
+            flex: 1;
+            /* Ocupa o espaço restante */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            /* Borda sutil */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            font-family: 'JetBrains Mono', monospace;
+            /* Fonte monoespaçada */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+        }
+
+        .ioc-item button {
+            background: var(--gradient);
+            /* Gradiente de fundo */
+            color: white;
+            /* Cor do texto */
+            border: none;
+            /* Remove borda padrão */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            cursor: pointer;
+            /* Indica que é clicável */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Centraliza verticalmente */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            width: 40px;
+            /* Largura fixa */
+            height: 40px;
+            /* Altura fixa */
+            flex-shrink: 0;
+            /* Previne que o botão diminua */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .ioc-item button:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            /* Inverte o gradiente */
+            transform: scale(1.1);
+            /* Efeito de escala */
+        }
+
+        .add-ioc {
+            margin-top: 1rem;
+            /* Margem superior */
+            padding: 0.8rem;
+            /* Espaçamento interno */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo transparente */
+            color: var(--light);
+            /* Cor do texto */
+            border: 1px dashed rgba(230, 57, 70, 0.4);
+            /* Borda tracejada */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            cursor: pointer;
+            /* Indica que é clicável */
+            font-size: 0.95rem;
+            /* Tamanho da fonte */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Centraliza verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            width: 100%;
+            /* Ocupa a largura total */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .add-ioc:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Fundo mais claro no hover */
+            border-color: var(--primary);
+            /* Borda primária no hover */
+            transform: translateY(-3px);
+            /* Efeito de "levantar" */
+        }
+
+        /*
+ * Seções de Relatório
+ */
+        .report-section {
+            margin-bottom: 2.5rem;
+            /* Margem inferior */
+        }
+
+        .report-section-title {
+            font-weight: 600;
+            /* Peso da fonte */
+            margin-bottom: 1rem;
+            /* Margem inferior */
+            display: flex;
+            /* Habilita Flexbox */
+            align-items: center;
+            /* Centraliza verticalmente */
+            gap: 0.8rem;
+            /* Espaçamento entre ícone e texto */
+            color: var(--primary-light);
+            /* Cor do texto */
+            text-transform: uppercase;
+            /* Converte para maiúsculas */
+            font-size: 1.1rem;
+            /* Tamanho da fonte */
+        }
+
+        .report-section-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Fundo sutil */
+            padding: 1.5rem;
+            /* Espaçamento interno */
+            border-radius: 12px;
+            /* Bordas arredondadas */
+            border-left: 5px solid var(--primary);
+            /* Borda esquerda de destaque */
+        }
+
+        .evidence-item {
+            margin-bottom: 1rem;
+            /* Margem inferior */
+            display: flex;
+            /* Habilita Flexbox */
+            flex-wrap: wrap;
+            /* Permite que os itens quebrem linha */
+            gap: 0.6rem;
+            /* Espaçamento entre os itens */
+        }
+
+        .evidence-label {
+            font-weight: 500;
+            /* Peso da fonte */
+            min-width: 180px;
+            /* Largura mínima para o label */
+            color: var(--light-gray);
+            /* Cor do texto */
+        }
+
+        .evidence-value {
+            flex: 1;
+            /* Ocupa o espaço restante */
+            word-break: break-all;
+            /* Quebra palavras longas */
+            color: var(--light);
+            /* Cor do texto */
+        }
+
+        .evidence-link {
+            color: var(--cyber-blue);
+            /* Cor do link */
+            text-decoration: none;
+            /* Remove sublinhado padrão */
+            transition: var(--transition);
+            /* Transição suave */
+        }
+
+        .evidence-link:hover {
+            color: var(--primary);
+            /* Altera a cor no hover */
+            text-decoration: underline;
+            /* Adiciona sublinhado no hover */
+        }
+
+        .action-item,
+        .recommendation-item {
+            margin-bottom: 0.5rem;
+            /* Margem inferior */
+            position: relative;
+            /* Necessário para o pseudo-elemento */
+            padding-left: 1.8rem;
+            /* Espaçamento para o bullet point */
+        }
+
+        .action-item::before {
+            content: "•";
+            /* Bullet point */
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            /* Cor do bullet point */
+            font-size: 1.3rem;
+            /* Tamanho do bullet point */
+        }
+
+        .recommendation-item::before {
+            content: "•";
+            /* Bullet point */
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            /* Cor do bullet point */
+            font-size: 1.3rem;
+            /* Tamanho do bullet point */
+        }
+
+        /* Utilitários */
+        .hidden {
+            display: none !important;
+            /* Esconde o elemento, forçando a ocultação */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Relatorio</h1>
+                        <p>Análise Inicial da atividade suspeita com relatórios</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="dashboard">
+            <div class="card input-section">
+                <h2 class="card-title"><i class="fas fa-file-import"></i> ENTRADA DE LOGS</h2>
+                <label for="log">Cole seu log de segurança abaixo:</label>
+                <textarea id="log" placeholder="[2023-07-15 14:32:45] SECURITY ALERT: Multiple failed login attempts (5) for user 'admin' from IP 192.168.1.105
+[2023-07-15 14:32:47] FIREWALL BLOCK: Suspicious port scan detected from 45.227.253.109
+..." oninput="updateStatusOnInput()"></textarea>
+                <div class="advanced-options" id="advancedOptionsGroup">
+                    <div class="advanced-options-title" onclick="toggleCategoryGroup('advancedOptionsGroup')">
+                        <span><i class="fas fa-cog"></i> OPÇÕES AVANÇADAS</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="advanced-options-content">
+                        <div class="form-group ioc-container">
+                            <label>IOCs (Indicadores de Comprometimento):</label>
+                            <div id="ioc-list">
+                                <div class="ioc-item">
+                                    <input type="text" placeholder="IP, Hash, Domínio..." id="main-ioc-field">
+                                    <button onclick="addIocFromMainField()"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <button class="add-ioc" onclick="addIocField()">
+                                <i class="fas fa-plus"></i> Adicionar outro IOC
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="gerarRelatorio()">
+                        <i class="fas fa-bolt"></i> GERAR RELATÓRIO
+                    </button>
+                    <button class="btn btn-success" onclick="copiarRelatorio()"><i class="fas fa-copy"></i>
+                        Copiar</button>
+                    <button class="btn btn-secondary" onclick="limparEntrada()">
+                        <i class="fas fa-eraser"></i> LIMPAR TUDO
+                    </button>
+                    <button class="btn btn-info" onclick="extrairDados()">
+                        <i class="fas fa-magic"></i> EXTRAIR DADOS
+                    </button>
+                </div>
+            </div>
+            <div class="card categories-section">
+                <h2 class="card-title"><i class="fas fa-tags"></i> CATEGORIAS DE INCIDENTES</h2>
+                <div class="categories-container">
+                    <div class="type-groups" id="incidentCategoriesContainer"></div>
+                </div>
+            </div>
+            <div class="card result-section">
+                <h2 class="card-title"><i class="fas fa-scroll"></i> RELATÓRIO GERADO</h2>
+                <div id="status" class="status status-waiting">
+                    <i class="fas fa-clock"></i> AGUARDANDO ENTRADA...
+                </div>
+                <pre id="reportOutput"></pre>
+            </div>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-message" id="modalMessage"></p>
+            <button class="btn btn-primary modal-close" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+    <script>
+        const reportOutput = document.getElementById('reportOutput');
+        const logInput = document.getElementById('log');
+        const statusDiv = document.getElementById('status');
+        const mainIocField = document.getElementById('main-ioc-field');
+        const iocList = document.getElementById('ioc-list');
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const categoriesData = [
+            {
+                name: "Ameaças Externas e de Rede",
+                icon: "fas fa-network-wired",
+                types: [
+                    "Conexão Inbound Suspeita",
+                    "IPs suspeitos",
+                    "Comunicação Inbound TOR",
+                    "Canary List (comunicação maliciosa)"
+                ]
+            },
+            {
+                name: "Comprometimento de Credenciais e Acesso",
+                icon: "fas fa-user-lock",
+                types: [
+                    "Falhas de autenticação",
+                    "Usuário ADD Grupo",
+                    "Senha Administrador Alterada",
+                    "Usuário ADD Grupo de ADMIN",
+                    "CyberArk",
+                    "Alteração de senha por usuário administrator",
+                    "Tentativa de Brute Force"
+                ]
+            },
+            {
+                name: "Saúde e Integridade do Host",
+                icon: "fas fa-server",
+                types: [
+                    "Silent Log Source",
+                    "Heartbeat",
+                    "Host Critical Condition",
+                    "Mídia Removível"
+                ]
+            },
+            {
+                name: "Malware e Vulnerabilidades",
+                icon: "fas fa-bug",
+                types: [
+                    "Malware",
+                    "Vulnerabilidades Encontradas",
+                    "Exfiltração"
+                ]
+            }
+        ];
+        function updateStatus(message, type = 'waiting') {
+            statusDiv.innerHTML = `<i class="fas fa-${type === 'waiting' ? 'clock' : type === 'processing' ? 'sync' : 'exclamation-circle'}"></i> ${message}`;
+            statusDiv.className = `status status-${type}`;
+            console.log(`Status atualizado: ${message} (${type})`);
+        }
+        function updateStatusOnInput() {
+            if (logInput.value.trim() === '') {
+                updateStatus('AGUARDANDO ENTRADA...');
+            } else {
+                updateStatus('ENTRADA DETECTADA. PRONTO PARA ANÁLISE.', 'processing');
+            }
+        }
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modal.classList.add('active');
+            console.log(`Modal exibido: ${title} - ${message}`);
+        }
+        function closeModal() {
+            modal.classList.remove('active');
+            console.log('Modal fechado');
+        }
+        function addIocField() {
+            const newIocItem = document.createElement('div');
+            newIocItem.className = 'ioc-item';
+            newIocItem.innerHTML = `
+                <input type="text" placeholder="IP, Hash, Domínio...">
+                <button onclick="removeIocField(this)"><i class="fas fa-minus"></i></button>
+            `;
+            iocList.appendChild(newIocItem);
+            console.log('Novo campo IOC adicionado');
+        }
+        function addIocFromMainField() {
+            const value = mainIocField.value.trim();
+            if (value) {
+                const newIocItem = document.createElement('div');
+                newIocItem.className = 'ioc-item';
+                newIocItem.innerHTML = `
+                    <input type="text" value="${value}" readonly>
+                    <button onclick="removeIocField(this)"><i class="fas fa-minus"></i></button>
+                `;
+                iocList.appendChild(newIocItem);
+                mainIocField.value = '';
+                console.log(`IOC adicionado: ${value}`);
+            }
+        }
+        function removeIocField(button) {
+            button.closest('.ioc-item').remove();
+            console.log('Campo IOC removido');
+        }
+        function toggleCategoryGroup(groupId) {
+            const group = document.getElementById(groupId);
+            group.classList.toggle('collapsed');
+            const icon = group.querySelector('.toggle-icon');
+            if (group.classList.contains('collapsed')) {
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+            } else {
+                icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+            }
+            console.log(`Grupo de categorias ${groupId} toggled`);
+        }
+        function populateCategories() {
+            const container = document.getElementById('incidentCategoriesContainer');
+            container.innerHTML = '';
+            categoriesData.forEach((group, index) => {
+                const groupId = `group-${index}`;
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'type-group collapsed'; // Adiciona a classe 'collapsed' por padrão
+                groupDiv.id = groupId;
+                groupDiv.innerHTML = `
+                    <div class="type-group-title" onclick="toggleCategoryGroup('${groupId}')">
+                        <span><i class="${group.icon}"></i> ${group.name}</span>
+                        <i class="fas fa-chevron-right toggle-icon"></i> <!-- Ícone inicial ajustado para 'fa-chevron-right' -->
+                    </div>
+                    <div class="type-options">
+                        ${group.types.map(type => `
+                            <div class="type-option">
+                                <input type="checkbox" id="type-${type.replace(/\s/g, '-')}" value="${type}">
+                                <label for="type-${type.replace(/\s/g, '-')}">${type}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(groupDiv);
+            });
+            console.log('Categorias populadas');
+        }
+        function validateIocs(iocs) {
+            const validatedIocs = [];
+            const ipRegex = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+            const urlRegex = /^https?:\/\/[^\s]+$/;
+            const hashRegex = /^[0-9a-fA-F]{32,128}$/;
+            iocs.forEach(ioc => {
+                if (ipRegex.test(ioc) || urlRegex.test(ioc) || hashRegex.test(ioc)) {
+                    validatedIocs.push(ioc);
+                }
+            });
+            console.log('IOCs validados:', validatedIocs);
+            return validatedIocs;
+        }
+        function getGreeting() {
+            const hour = new Date().getHours();
+            let greeting;
+            if (hour < 5 || hour >= 18) greeting = "Boa noite";
+            else if (hour >= 5 && hour < 12) greeting = "Bom dia";
+            else greeting = "Boa tarde";
+            console.log(`Saudação gerada: ${greeting}`);
+            return greeting;
+        }
+        async function gerarRelatorio() {
+            updateStatus('GERANDO RELATÓRIO...', 'processing');
+            reportOutput.innerHTML = '';
+            const logContent = logInput.value.trim();
+            if (!logContent) {
+                updateStatus('ERRO: Nenhum log fornecido.', 'error');
+                showModal('Erro', 'Por favor, insira algum conteúdo de log para gerar o relatório.');
+                return;
+            }
+            const selectedCategories = Array.from(document.querySelectorAll('#incidentCategoriesContainer input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+            if (selectedCategories.length === 0) {
+                updateStatus('ERRO: Nenhuma categoria selecionada.', 'error');
+                showModal('Erro', 'Por favor, selecione pelo menos uma categoria de incidente.');
+                return;
+            }
+            const iocs = validateIocs(
+                Array.from(document.querySelectorAll('#ioc-list input[type="text"]'))
+                    .map(input => input.value.trim())
+                    .filter(value => value !== '')
+            );
+            try {
+                console.log('Iniciando geração de relatório local com:', {
+                    logContent: logContent.substring(0, 50) + '...',
+                    selectedCategories,
+                    iocs
+                });
+                const report = await generateReportContent(logContent, selectedCategories, iocs);
+                console.log('Relatório gerado com sucesso:', report.substring(0, 100) + '...');
+                simulateTyping(report);
+                updateStatus('RELATÓRIO GERADO COM SUCESSO!', 'success');
+            } catch (error) {
+                console.error('Erro ao gerar relatório local:', error, error.stack);
+                updateStatus('ERRO: Falha ao gerar relatório.', 'error');
+                showModal('Erro', `Não foi possível gerar o relatório. Detalhes: ${error.message || 'Erro desconhecido'}. Verifique o console (F12 > Console) para mais informações.`);
+            }
+        }
+        function generateReportContent(logContent, selectedCategories, iocs) {
+            try {
+                console.log('Parsing log content...');
+                const logData = parseLog(logContent);
+                if (!logData || Object.keys(logData).length === 0) {
+                    throw new Error('Nenhum dado válido extraído do log.');
+                }
+                console.log('Log parsed:', logData);
+                const greeting = getGreeting();
+                const eventType = logData["Tipo do Evento"]?.toLowerCase() || "";
+                const eventCategory = determineEventCategory(eventType, selectedCategories);
+                let report = `Prezados(as), ${greeting}.\n\n`;
+                report += "Nossa equipe identificou uma atividade suspeita em seu ambiente. Seguem abaixo os detalhes para análise e validação:\n\n";
+                report += `Caso de uso: ${logData["Tipo do Evento"] || "Atividade Suspeita Detectada"}\n\n`;
+                report += "🕵 Análise:\n";
+                report += generateAnalysis(eventCategory, logData, iocs) + "\n\n";
+                report += "Fonte de dados utilizada na análise:\n";
+                report += `${logData["Fonte do Log"] || "Sistema de Detecção de Ameaças"}\n\n`;
+                report += "🧾 Evidências\n";
+                report += generateEvidenceSection(logData);
+                report += generateIOCs(iocs);
+                report += "\n🕵 Justificativa para Abertura do Caso:\n";
+                report += generateJustification(logData, eventCategory, iocs) + "\n";
+                report += "\n📌 Recomendações:\n";
+                report += generateRecommendations(eventCategory);
+                return report;
+            } catch (error) {
+                console.error('Erro no generateReportContent:', error, error.stack);
+                throw new Error(`Falha no gerador local: ${error.message}`);
+            }
+        }
+        function parseLog(content) {
+            try {
+                console.log('Tentando parse como JSON...');
+                const jsonData = JSON.parse(content);
+                return parseLogData(jsonData);
+            } catch (e) {
+                console.log('Não é JSON, usando parseAnyLog...');
+                return parseAnyLog(content);
+            }
+        }
+        function parseAnyLog(content) {
+            const result = {
+                "Data do Log": null,
+                "Fonte do Log": null,
+                "Usuário de Origem": null,
+                "Usuário Afetado": null,
+                "IP/Host de Origem": null,
+                "IP/Host Afetado": null,
+                "Localização (Origem/Impactado)": null,
+                "Tipo do Evento": "Security Event",
+                "Grupo": null,
+                "Objeto": null,
+                "Nome do Objeto": null,
+                "Tipo do Objeto": null,
+                "Assunto": null,
+                "Política": null,
+                "Nome da Ameaça": null,
+                "Nome do Processo": null,
+                "Nome da Regra MPE": null,
+                "Mensagem do Fornecedor": null,
+                "ID do Fornecedor": null,
+                "Identificador de Navegador": null,
+                "Ação": null,
+                "Status": null,
+                "Resultado": null,
+                "Mensagem de Log": null,
+                "IOC": null
+            };
+
+            if (typeof content !== 'string' || !content.trim()) {
+                console.warn('Entrada inválida para parseAnyLog:', {
+                    type: typeof content,
+                    value: content,
+                    logContent: String(content).substring(0, 100) + (String(content).length > 100 ? '...' : '')
+                });
+                return result;
+            }
+
+            try {
+                // Extrai data do log
+                const extractDate = (text) => {
+                    const datePatterns = [
+                        /(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d{3})?(?:Z|[+-]\d{2}:\d{2})?)/,
+                        /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,
+                        /(\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2})/
+                    ];
+                    for (const pattern of datePatterns) {
+                        const match = text.match(pattern);
+                        if (match) return match[0];
+                    }
+                    return null;
+                };
+
+                // Extrai IPs/Hosts
+                const extractIPs = (text) => {
+                    const ips = text.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g);
+                    return {
+                        origin: ips && ips[0] ? ips[0] : null,
+                        affected: ips && ips[1] ? ips[1] : null
+                    };
+                };
+
+                // Extrai usuários
+                const extractUsers = (text) => {
+                    const userPatterns = [
+                        /user(?:name)?[=:]\s*["']?([^"'\s,]+)/i,
+                        /account:\s*(\S+)/i,
+                        /src_user:\s*(\S+)/i,
+                        /dst_user:\s*(\S+)/i
+                    ];
+                    let origin = null, affected = null;
+                    for (const pattern of userPatterns) {
+                        const match = text.match(pattern);
+                        if (match && match[1]) {
+                            if (pattern.toString().includes('src_user') || pattern.toString().includes('user(?:name)?')) {
+                                origin = match[1];
+                            } else if (pattern.toString().includes('dst_user')) {
+                                affected = match[1];
+                            }
+                        }
+                    }
+                    return { origin, affected };
+                };
+
+                // Extrai localização (simples, pode ser expandido com consulta a APIs)
+                const extractLocation = (text, ipOrigin, ipAffected) => {
+                    const countryPattern = /(?:country|location):\s*([^\s,]+)/i;
+                    const match = text.match(countryPattern);
+                    if (match && match[1]) {
+                        return match[1];
+                    }
+                    // Placeholder para integração futura com API de geolocalização
+                    return ipOrigin ? `IP ${ipOrigin} (localização não especificada)` : null;
+                };
+
+                // Determina tipo do evento
+                const determineEventType = (text) => {
+                    const eventTypes = [
+                        { pattern: /failed login|authentication failed/i, type: "Falhas de autenticação" },
+                        { pattern: /port scan|port sweep/i, type: "Port Scan Detected" },
+                        { pattern: /malicious|malware|virus/i, type: "Malware" },
+                        { pattern: /brute force/i, type: "Tentativa de Brute Force" },
+                        { pattern: /exfiltration|data leak/i, type: "Exfiltração" },
+                        { pattern: /add group|user added/i, type: "Usuário ADD Grupo" },
+                        { pattern: /password changed/i, type: "Senha Administrador Alterada" }
+                    ];
+                    for (const event of eventTypes) {
+                        if (event.pattern.test(text)) return event.type;
+                    }
+                    return "Security Event";
+                };
+
+                // Determina fonte do log
+                const determineLogSource = (text) => {
+                    const sources = [
+                        { pattern: /firewall|palo|fortinet/i, source: "Firewall" },
+                        { pattern: /windows|event id/i, source: "Windows Event" },
+                        { pattern: /syslog|siem/i, source: "SIEM" },
+                        { pattern: /cyberark/i, source: "CyberArk" }
+                    ];
+                    for (const source of sources) {
+                        if (source.pattern.test(text)) return source.source;
+                    }
+                    return "Security System";
+                };
+
+                // Extrai mensagem
+                const extractMessage = (text) => {
+                    const messagePatterns = [
+                        /(?:alert|error|block[ed]?|warning)[ :]+([^\n]+)/i,
+                        /message:\s*([^\n]+)/i,
+                        /msg:\s*([^\n]+)/i
+                    ];
+                    for (const pattern of messagePatterns) {
+                        const match = text.match(pattern);
+                        if (match && match[1]) return match[1].trim();
+                    }
+                    return text.split('\n')[0].trim();
+                };
+
+                // Extrai IOCs (URLs ou IPs suspeitos)
+                const extractIOC = (text) => {
+                    const urlPattern = /(https?:\/\/[^\s]+)/i;
+                    const match = text.match(urlPattern);
+                    if (match && match[1]) return match[1];
+                    const ip = text.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);
+                    if (ip) return `https://www.abuseipdb.com/check/${ip[0]}`;
+                    return null;
+                };
+
+                // Extrai outros campos genéricos com regex
+                const extractField = (text, fieldName) => {
+                    const pattern = new RegExp(`${fieldName}[=:]\s*["']?([^"'\s,]+)`, 'i');
+                    const match = text.match(pattern);
+                    return match && match[1] ? match[1] : null;
+                };
+
+                // Extração dos campos
+                result["Data do Log"] = extractDate(content);
+                const ipData = extractIPs(content);
+                result["IP/Host de Origem"] = ipData.origin;
+                result["IP/Host Afetado"] = ipData.affected;
+                const userData = extractUsers(content);
+                result["Usuário de Origem"] = userData.origin;
+                result["Usuário Afetado"] = userData.affected;
+                result["Localização (Origem/Impactado)"] = extractLocation(content, ipData.origin, ipData.affected);
+                result["Tipo do Evento"] = determineEventType(content);
+                result["Fonte do Log"] = determineLogSource(content);
+                result["Mensagem do Fornecedor"] = extractMessage(content);
+                result["Mensagem de Log"] = content.trim().split('\n')[0];
+                result["IOC"] = extractIOC(content);
+
+                // Campos genéricos extraídos com base em chaves
+                const fields = [
+                    "Grupo", "Objeto", "Nome do Objeto", "Tipo do Objeto", "Assunto", "Política",
+                    "Nome da Ameaça", "Nome do Processo", "Nome da Regra MPE", "ID do Fornecedor",
+                    "Identificador de Navegador", "Ação", "Status", "Resultado"
+                ];
+                fields.forEach(field => {
+                    result[field] = extractField(content, field.replace(/ /g, '_'));
+                });
+
+                console.log('Resultado do parseAnyLog:', result);
+                return result;
+            } catch (error) {
+                console.error('Erro ao parsear log:', {
+                    error: error.message,
+                    stack: error.stack,
+                    logContent: content.substring(0, 100) + (content.length > 100 ? '...' : '')
+                });
+                return result;
+            }
+        }
+        function generateEvidenceSection(logData) {
+            const evidenceFields = [
+                "Data do Log",
+                "Fonte do Log",
+                "Usuário de Origem",
+                "Usuário Afetado",
+                "IP/Host de Origem",
+                "IP/Host Afetado",
+                "Localização (Origem/Impactado)",
+                "Tipo do Evento",
+                "Grupo",
+                "Objeto",
+                "Nome do Objeto",
+                "Tipo do Objeto",
+                "Assunto",
+                "Política",
+                "Nome da Ameaça",
+                "Nome do Processo",
+                "Nome da Regra MPE",
+                "Mensagem do Fornecedor",
+                "ID do Fornecedor",
+                "Identificador de Navegador",
+                "Ação",
+                "Status",
+                "Resultado"
+            ];
+            let evidenceText = "";
+            evidenceFields.forEach(field => {
+                if (logData[field] !== undefined && logData[field] !== null && logData[field] !== "") {
+                    let value = logData[field];
+                    if (field === "Data do Log" && value) {
+                        try {
+                            const date = new Date(value);
+                            if (!isNaN(date)) {
+                                value = date.toISOString().replace('T', ' ').replace('.000Z', ' (UTC)');
+                            }
+                        } catch (e) { }
+                    }
+                    if (field === "IP/Host Afetado" && logData["IP/Host Afetado"] && logData["device_hostname"]) {
+                        value = `${logData["IP/Host Afetado"]} (${logData["device_hostname"]})`;
+                    }
+                    if (field === "Tipo do Evento" && value) {
+                        const translations = {
+                            "Failed Authentication": "Failed Authentication (Falha de Autenticação)",
+                            "Successful Authentication": "Successful Authentication (Autenticação Bem-sucedida)",
+                            "Logon": "Logon (Acesso ao Sistema)",
+                            "Logoff": "Logoff (Saída do Sistema)",
+                            "File Deleted": "File Deleted (Arquivo Excluído)",
+                            "Malware Detected": "Malware Detected (Malware Detectado)",
+                            "Port Scan": "Port Scan (Varredura de Portas)",
+                            "Brute Force Attempt": "Brute Force Attempt (Tentativa de Força Bruta)"
+                        };
+                        value = translations[value] || value;
+                    }
+                    evidenceText += `${field}: ${value}\n`;
+                }
+            });
+            console.log('Seção de evidências gerada:', evidenceText);
+            return evidenceText;
+        }
+        function determineEventCategory(eventType, selectedCategories) {
+            const keywords = {
+                "Conexão Inbound Suspeita": ["conexão", "inbound", "rdp"],
+                "IPs suspeitos": ["ip suspeito", "reputação", "malicioso"],
+                "Falhas de autenticação": ["falha de autenticação", "logon falhou", "senha incorreta"],
+                "Silent Log Source": ["sem log", "silent", "log desativado"],
+                "Heartbeat": ["heartbeat", "batimento", "ping"],
+                "Host Critical Condition": ["host crítico", "host falhou"],
+                "Malware": ["malware", "trojan", "ransomware", "vírus"],
+                "Vulnerabilidades Encontradas": ["vulnerabilidade", "cve"],
+                "Usuário ADD Grupo": ["usuário adicionado", "grupo"],
+                "Mídia Removível": ["usb", "dispositivo removível"],
+                "Exfiltração": ["exfiltração", "dados vazados"],
+                "Senha Administrador Alterada": ["senha administrador", "alteração de senha"],
+                "Usuário ADD Grupo de ADMIN": ["admin", "grupo de administradores"],
+                "CyberArk": ["cyberark", "vault"],
+                "Comunicação Inbound TOR": ["tor", "rede onion"],
+                "Alteração de senha por usuário administrator": ["senha alterada", "administrator"],
+                "Canary List (comunicação maliciosa)": ["canary", "domínio canary"],
+                "Tentativa de Brute Force": ["brute force", "múltiplas tentativas"]
+            };
+            for (let [categoria, palavras] of Object.entries(keywords)) {
+                if (palavras.some(p => eventType.includes(p))) {
+                    return categoria;
+                }
+            }
+            console.log('Categoria determinada:', selectedCategories[0] || "Atividade Suspeita");
+            return selectedCategories[0] || "Atividade Suspeita";
+        }
+        function generateAnalysis(category, logData, iocs) {
+            const analysisTemplates = {
+                "Tentativa de Brute Force": () => `
+Tentativas de força bruta são técnicas amplamente utilizadas por atacantes para comprometer credenciais de acesso por meio de múltiplas tentativas de autenticação com diferentes combinações de senhas. Este caso de uso tem como objetivo identificar padrões de falhas de login repetidas em curtos intervalos de tempo, indicando uma possível atividade maliciosa. No log fornecido, foram detectadas múltiplas tentativas de autenticação malsucedidas para o usuário "${logData["Usuário de Origem"] || "desconhecido"}" originadas do IP "${logData["IP/Host de Origem"] || "desconhecido"}" em ${logData["Data do Log"] || "data não especificada"}. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a atividades suspeitas adicionais, reforçando a possibilidade de um ataque coordenado.` : ""} Caso não mitigada, essa ameaça pode levar a acesso não autorizado, escalação de privilégios ou comprometimento de sistemas críticos.
+                `,
+                "Malware": () => `
+A detecção de malware refere-se à identificação de códigos maliciosos, como vírus, trojans ou ransomware, que podem comprometer a integridade, confidencialidade ou disponibilidade de sistemas. Este caso de uso visa detectar a presença ou execução de arquivos maliciosos no ambiente. O log indica a identificação de um malware associado ao hash "${logData["Nome do Objeto"] || "desconhecido"}" originado do IP "${logData["IP/Host de Origem"] || "desconhecido"}" em ${logData["Data do Log"] || "data não especificada"}. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, sugerindo uma ameaça persistente.` : ""} O impacto potencial inclui roubo de dados, interrupção de serviços ou propagação para outros sistemas na rede.
+                `,
+                "Conexão Inbound Suspeita": () => `
+Conexões inbound suspeitas frequentemente indicam tentativas de exploração de serviços expostos, como RDP ou SSH, por atacantes externos. Este caso de uso monitora tráfego de entrada não autorizado ou anômalo. O log reporta uma conexão suspeita do IP "${logData["IP/Host de Origem"] || "desconhecido"}" direcionada ao IP "${logData["IP/Host Afetado"] || "desconhecido"}" em ${logData["Data do Log"] || "data não especificada"}. ${iocs.length ? `O IOC "${iocs[0]}" foi identificado como parte dessa atividade, sugerindo um possível vetor de ataque.` : ""} Se não tratada, essa ameaça pode resultar em acesso remoto não autorizado ou exploração de vulnerabilidades.
+                `,
+                "IPs suspeitos": () => `
+A detecção de IPs suspeitos envolve a identificação de comunicações com endereços associados a atividades maliciosas, como comando e controle (C2) ou botnets. Este caso de uso verifica tráfego de rede contra listas de inteligência de ameaças. O log aponta para uma comunicação com o IP "${logData["IP/Host de Origem"] || "desconhecido"}" em ${logData["Data do Log"] || "data não especificada"}. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, reforçando sua natureza suspeita.` : ""} O impacto potencial inclui a exfiltração de dados ou a instalação de malware.
+                `,
+                "Exfiltração": () => `
+A exfiltração de dados é uma ameaça crítica que envolve a transferência não autorizada de informações sensíveis para fora da rede. Este caso de uso detecta padrões de tráfego anômalos que indicam vazamento de dados. O log identificou uma transferência suspeita envolvendo o IP "${logData["IP/Host de Origem"] || "desconhecido"}" e o destino "${logData["IP/Host Afetado"] || "desconhecido"}" em ${logData["Data do Log"] || "data não especificada"}. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, sugerindo um ataque direcionado.` : ""} A não mitigação pode resultar em perda de dados confidenciais e danos reputacionais.
+                `,
+                default: () => `
+A atividade suspeita detectada indica um comportamento anômalo que requer investigação adicional. Este caso de uso busca identificar desvios de padrões normais de operação no ambiente. O log fornecido registra uma atividade em ${logData["Data do Log"] || "data não especificada"} envolvendo o IP "${logData["IP/Host de Origem"] || "desconhecido"}" e o usuário "${logData["Usuário de Origem"] || "desconhecido"}". ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade.` : ""} O impacto potencial depende da natureza da ameaça, mas pode incluir comprometimento de sistemas ou dados.
+                `
+            };
+            const template = analysisTemplates[category] || analysisTemplates.default;
+            const analysis = template();
+            console.log('Análise gerada para categoria:', category, analysis);
+            return analysis;
+        }
+        function generateIOCs(iocs) {
+            if (!iocs.length) {
+                console.log('Nenhum IOC fornecido');
+                return "\nIOC: [NENHUM IOC FORNECIDO - PODE SER ADICIONADO MANUALMENTE]\n";
+            }
+            let out = "\nIOC:\n";
+            iocs.forEach(ioc => {
+                out += `- ${ioc}\n`;
+                if (/^\d{1,3}(\.\d{1,3}){3}$/.test(ioc)) {
+                    out += `  - AbuseIPDB: https://www.abuseipdb.com/check/${ioc}\n`;
+                    out += `  - VirusTotal: https://www.virustotal.com/gui/ip-address/${ioc}\n`;
+                } else if (/^http/.test(ioc)) {
+                    out += `  - VirusTotal: https://www.virustotal.com/gui/url/${encodeURIComponent(ioc)}\n`;
+                } else if (/\b[0-9a-fA-F]{32,128}\b/.test(ioc)) {
+                    out += `  - VirusTotal: https://www.virustotal.com/gui/file/${ioc}\n`;
+                }
+            });
+            console.log('IOCs gerados:', out);
+            return out;
+        }
+        function generateJustification(logData, category, iocs) {
+            const justificationTemplates = {
+                "Tentativa de Brute Force": () => {
+                    const attemptCount = logData["Mensagem do Fornecedor"] && typeof logData["Mensagem do Fornecedor"] === 'string'
+                        ? (logData["Mensagem do Fornecedor"].match(/(\d+)/)?.[1] || "várias")
+                        : "várias";
+                    return `
+Este caso foi aberto devido à detecção de múltiplas tentativas de autenticação malsucedidas (${attemptCount} tentativas) para o usuário "${logData["Usuário de Origem"] || "desconhecido"}" originadas do IP "${logData["IP/Host de Origem"] || "desconhecido"}", conforme registrado no log às ${logData["Data do Log"] || "data não especificada"}. A atividade foi classificada como "Tentativa de Brute Force" devido ao padrão de falhas repetidas em um curto intervalo, indicando uma possível tentativa de comprometimento de credenciais. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a atividades adicionais, como varredura de portas, sugerindo um ataque coordenado.` : ""} A gravidade deste incidente justifica sua investigação devido ao risco de acesso não autorizado a sistemas críticos. A ação inicial registrada foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"} para monitoramento contínuo.
+            `;
+                },
+                "Malware": () => `
+Este caso foi aberto devido à identificação de um malware no ambiente, conforme indicado no log às ${logData["Data do Log"] || "data não especificada"}. A atividade envolveu a execução ou presença de um arquivo malicioso com hash "${logData["Nome do Objeto"] || "desconhecido"}" originado do IP "${logData["IP/Host de Origem"] || "desconhecido"}". A classificação como "Malware" foi baseada na detecção de código malicioso, que pode comprometer a segurança do sistema. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, reforçando a necessidade de resposta imediata.` : ""} A gravidade do incidente decorre do potencial de roubo de dados, interrupção de serviços ou propagação na rede. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Conexão Inbound Suspeita": () => `
+Este caso foi aberto devido à detecção de uma conexão inbound suspeita registrada no log às ${logData["Data do Log"] || "data não especificada"}. A atividade envolveu uma tentativa de conexão do IP "${logData["IP/Host de Origem"] || "desconhecido"}" ao destino "${logData["IP/Host Afetado"] || "desconhecido"}". Classificada como "Conexão Inbound Suspeita", esta atividade sugere uma possível tentativa de exploração de serviços expostos. ${iocs.length ? `O IOC "${iocs[0]}" foi identificado como parte dessa atividade, indicando um vetor de ataque.` : ""} A gravidade do incidente justifica investigação devido ao risco de acesso remoto não autorizado. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "IPs suspeitos": () => `
+Este caso foi aberto devido à identificação de comunicação com um IP suspeito às ${logData["Data do Log"] || "data não especificada"}. O log registra tráfego envolvendo o IP "${logData["IP/Host de Origem"] || "desconhecido"}", potencialmente associado a atividades maliciosas. A classificação como "IPs suspeitos" baseia-se na correlação com listas de inteligência de ameaças. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, reforçando sua natureza maliciosa.` : ""} A gravidade do incidente decorre do risco de exfiltração de dados ou comprometimento do sistema. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Exfiltração": () => `
+Este caso foi aberto devido à detecção de uma possível exfiltração de dados às ${logData["Data do Log"] || "data não especificada"}. O log indica uma transferência de dados suspeita do IP "${logData["IP/Host de Origem"] || "desconhecido"}" para o destino "${logData["IP/Host Afetado"] || "desconhecido"}". Classificada como "Exfiltração", esta atividade sugere um vazamento de informações sensíveis. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, indicando um ataque direcionado.` : ""} A gravidade do incidente é alta devido ao potencial de perda de dados confidenciais e danos reputacionais. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Falhas de autenticação": () => `
+Este caso foi aberto devido à detecção de falhas de autenticação repetidas registradas no log às ${logData["Data do Log"] || "data não especificada"}. A atividade envolve tentativas malsucedidas de login pelo usuário "${logData["Usuário de Origem"] || "desconhecido"}" a partir do IP "${logData["IP/Host de Origem"] || "desconhecido"}". Classificada como "Falhas de autenticação", esta atividade indica uma possível tentativa de acesso não autorizado. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, sugerindo uma ameaça persistente.` : ""} A gravidade do incidente justifica investigação para prevenir comprometimento de credenciais. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Silent Log Source": () => `
+Este caso foi aberto devido à ausência de logs esperados de uma fonte crítica às ${logData["Data do Log"] || "data não especificada"}. A falta de registros da fonte "${logData["Fonte do Log"] || "desconhecida"}" foi classificada como "Silent Log Source", indicando uma possível falha na coleta de logs ou desativação intencional. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com atividades suspeitas, sugerindo manipulação do sistema.` : ""} A gravidade do incidente decorre do risco de atividades não detectadas. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Heartbeat": () => `
+Este caso foi aberto devido à interrupção ou anomalia no sinal de heartbeat de um dispositivo crítico às ${logData["Data do Log"] || "data não especificada"}. A falha no heartbeat do host "${logData["IP/Host Afetado"] || "desconhecido"}" foi classificada como "Heartbeat", indicando uma possível falha de sistema ou desconexão. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, sugerindo uma ameaça potencial.` : ""} A gravidade do incidente justifica verificação imediata para garantir a continuidade dos serviços. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Host Critical Condition": () => `
+Este caso foi aberto devido à detecção de uma condição crítica no host "${logData["IP/Host Afetado"] || "desconhecido"}" às ${logData["Data do Log"] || "data não especificada"}. A atividade foi classificada como "Host Critical Condition" com base em indicadores de desempenho ou segurança anômalos. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, reforçando a necessidade de resposta.` : ""} A gravidade do incidente é alta devido ao risco de interrupção de serviços críticos. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Vulnerabilidades Encontradas": () => `
+Este caso foi aberto devido à identificação de vulnerabilidades no ambiente às ${logData["Data do Log"] || "data não especificada"}. O log reporta a descoberta de uma vulnerabilidade associada ao sistema "${logData["Nome do Objeto"] || "desconhecido"}". Classificada como "Vulnerabilidades Encontradas", esta atividade indica um risco de exploração por atacantes. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a tentativas de exploração, sugerindo urgência.` : ""} A gravidade do incidente justifica mitigação imediata para prevenir comprometimento. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Usuário ADD Grupo": () => `
+Este caso foi aberto devido à adição de um usuário a um grupo de segurança às ${logData["Data do Log"] || "data não especificada"}. O usuário "${logData["Usuário de Origem"] || "desconhecido"}" foi adicionado ao grupo "${logData["Grupo"] || "desconhecido"}". Classificada como "Usuário ADD Grupo", esta atividade pode indicar uma escalação de privilégios não autorizada. ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, sugerindo manipulação maliciosa.` : ""} A gravidade do incidente requer validação para confirmar legitimidade. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Mídia Removível": () => `
+Este caso foi aberto devido à detecção de uso de mídia removível no host "${logData["IP/Host Afetado"] || "desconhecido"}" às ${logData["Data do Log"] || "data não especificada"}. Classificada como "Mídia Removível", esta atividade pode indicar uma tentativa de introdução de malware ou exfiltração de dados. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, reforçando a suspeita.` : ""} A gravidade do incidente justifica investigação para avaliar riscos. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Senha Administrador Alterada": () => `
+Este caso foi aberto devido à alteração da senha de uma conta administrativa às ${logData["Data do Log"] || "data não especificada"}. A atividade envolveu a conta "${logData["Usuário de Origem"] || "desconhecido"}" e foi classificada como "Senha Administrador Alterada". ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, sugerindo possível comprometimento.` : ""} A gravidade do incidente é alta devido ao risco de acesso não autorizado. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Usuário ADD Grupo de ADMIN": () => `
+Este caso foi aberto devido à adição de um usuário a um grupo de administradores às ${logData["Data do Log"] || "data não especificada"}. O usuário "${logData["Usuário de Origem"] || "desconhecido"}" foi adicionado ao grupo de administradores. Classificada como "Usuário ADD Grupo de ADMIN", esta atividade indica uma possível escalação de privilégios. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, sugerindo uma ameaça.` : ""} A gravidade do incidente requer validação imediata. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "CyberArk": () => `
+Este caso foi aberto devido à detecção de uma atividade suspeita no sistema CyberArk às ${logData["Data do Log"] || "data não especificada"}. A atividade envolveu a conta "${logData["Usuário de Origem"] || "desconhecido"}" e foi classificada como "CyberArk". ${iocs.length ? `O IOC "${iocs[0]}" foi correlacionado com essa atividade, indicando um risco potencial.` : ""} A gravidade do incidente decorre do acesso a credenciais privilegiadas. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                "Comunicação Inbound TOR": () => `
+Este caso foi aberto devido à detecção de comunicação inbound via rede TOR às ${logData["Data do Log"] || "data não especificada"}. A conexão originou-se do IP "${logData["IP/Host de Origem"] || "desconhecido"}" e foi direcionada ao IP "${logData["IP/Host Afetado"] || "desconhecido"}". Classificada como "Comunicação Inbound TOR", esta atividade sugere tentativas de anonimização por atacantes. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, reforçando a suspeita.` : ""} A gravidade do incidente justifica investigação. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `,
+                default: () => `
+Este caso foi aberto devido à detecção de uma atividade suspeita não categorizada às ${logData["Data do Log"] || "data não especificada"}. A atividade envolveu o IP "${logData["IP/Host de Origem"] || "desconhecido"}" e o usuário "${logData["Usuário de Origem"] || "desconhecido"}". Classificada como "${category || "Atividade Suspeita"}", esta atividade requer investigação adicional para determinar sua natureza. ${iocs.length ? `O IOC "${iocs[0]}" foi associado a essa atividade, sugerindo um risco potencial.` : ""} A gravidade do incidente justifica análise detalhada. A ação inicial foi ${logData["Ação"] || "alerta gerado"}, com status ${logData["Status"] || "ativo"}.
+        `
+            };
+            const template = justificationTemplates[category] || justificationTemplates.default;
+            const justification = template();
+            console.log('Justificativa gerada para categoria:', category, justification);
+            return justification;
+        }
+        function generateRecommendations(category) {
+            const base = [
+                "- Isolar sistemas potencialmente comprometidos para análise",
+                "- Coletar e preservar evidências para análise forense",
+                "- Revisar logs relacionados para identificar atividades correlacionadas",
+                "- Atualizar assinaturas de ameaças e regras de detecção",
+                "- Notificar as partes interessadas conforme políticas de segurança",
+                "- Documentar todas as ações tomadas para referência futura",
+                "- [ADICIONAR RECOMENDAÇÕES ESPECÍFICAS CONFORME NECESSÁRIO]"
+            ];
+            const specifics = {
+                "Tentativa de Brute Force": [
+                    "- Implementar bloqueio temporário da conta após múltiplas falhas",
+                    "- Verificar tentativas semelhantes em outras contas",
+                    "- Considerar uso de autenticação multifator"
+                ],
+                "Conexão Inbound Suspeita": [
+                    "- Bloquear o IP de origem nas firewalls",
+                    "- Validar logs de RDP e autenticação",
+                    "- Checar uso de contas privilegiadas"
+                ],
+                "Malware": [
+                    "- Rodar ferramenta antivírus/antimalware",
+                    "- Verificar persistência e tarefas agendadas",
+                    "- Realizar escaneamento em rede"
+                ],
+                "IPs suspeitos": [
+                    "- Bloquear comunicações com IPs suspeitos nas firewalls",
+                    "- Verificar histórico de tráfego de rede",
+                    "- Atualizar listas de inteligência de ameaças"
+                ],
+                "Exfiltração": [
+                    "- Inspecionar tráfego de saída para identificar vazamentos",
+                    "- Implementar controles de DLP (Data Loss Prevention)",
+                    "- Realizar auditoria de dados sensíveis"
+                ]
+            };
+            const recommendations = [...(specifics[category] || []), ...base].join('\n');
+            console.log('Recomendações geradas para categoria:', category, recommendations);
+            return recommendations;
+        }
+        function parseLogData(logData) {
+            const fieldMappings = {
+                "event_time": "Data do Log",
+                "timestamp": "Data do Log",
+                "time": "Data do Log",
+                "log_source": "Fonte do Log",
+                "source": "Fonte do Log",
+                "deviceVendor": "Fonte do Log",
+                "username": "Usuário de Origem",
+                "user": "Usuário de Origem",
+                "srcUser": "Usuário de Origem",
+                "dstUser": "Usuário Afetado",
+                "targetUser": "Usuário Afetado",
+                "source_ip": "IP/Host de Origem",
+                "src_ip": "IP/Host de Origem",
+                "src": "IP/Host de Origem",
+                "destination_ip": "IP/Host Afetado",
+                "dst_ip": "IP/Host Afetado",
+                "dst": "IP/Host Afetado",
+                "device_hostname": "device_hostname",
+                "location": "Localização (Origem/Impactado)",
+                "geo": "Localização (Origem/Impactado)",
+                "event_type": "Tipo do Evento",
+                "eventID": "Tipo do Evento",
+                "EventID": "Tipo do Evento",
+                "description": "Mensagem do Fornecedor",
+                "message": "Mensagem do Fornecedor",
+                "msg": "Mensagem do Fornecedor",
+                "action_taken": "Ação",
+                "action": "Ação",
+                "status": "Status",
+                "status_code": "Status",
+                "result": "Resultado",
+                "detection_rule": "Nome da Regra MPE",
+                "rule": "Nome da Regra MPE",
+                "policy": "Política"
+            };
+            const result = {};
+            for (const [sourceField, targetField] of Object.entries(fieldMappings)) {
+                if (logData[sourceField] !== undefined && logData[sourceField] !== null) {
+                    result[targetField] = logData[sourceField];
+                }
+            }
+            console.log('Dados do log parseados:', result);
+            return result;
+        }
+        function limparEntrada() {
+            logInput.value = '';
+            reportOutput.innerHTML = '';
+            document.querySelectorAll('#incidentCategoriesContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            iocList.innerHTML = `
+                <div class="ioc-item">
+                    <input type="text" placeholder="IP, Hash, Domínio..." id="main-ioc-field">
+                    <button onclick="addIocFromMainField()"><i class="fas fa-plus"></i></button>
+                </div>
+            `;
+            mainIocField.value = '';
+            updateStatus('CAMPOS LIMPOS. AGUARDANDO ENTRADA...');
+            showModal('Limpeza Concluída', 'Todos os campos e o relatório foram limpos.');
+        }
+        function extrairDados() {
+            updateStatus('EXTRAINDO DADOS...', 'processing');
+            const logContent = logInput.value.trim();
+            if (!logContent) {
+                updateStatus('ERRO: Nenhum log fornecido para extração.', 'error');
+                showModal('Erro', 'Por favor, insira algum conteúdo de log para extrair dados.');
+                return;
+            }
+            const extracted = extractEntities(logContent);
+            let extractedReport = "### Dados Extraídos:\n\n";
+            if (Object.keys(extracted).length === 0) {
+                extractedReport += "Nenhum dado relevante extraído.\n";
+            } else {
+                for (const key in extracted) {
+                    extractedReport += `**${key.toUpperCase()}**:\n`;
+                    if (extracted[key].length > 0) {
+                        extracted[key].forEach(item => {
+                            extractedReport += `- ${item}\n`;
+                        });
+                    } else {
+                        extractedReport += `- Nenhum encontrado.\n`;
+                    }
+                    extractedReport += "\n";
+                }
+            }
+            console.log('Dados extraídos:', extracted);
+            simulateTyping(extractedReport);
+            updateStatus('DADOS EXTRAÍDOS COM SUCESSO!', 'success');
+        }
+        function extractEntities(logContent) {
+            const ips = logContent.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g) || [];
+            const users = logContent.match(/(user|usuário|username):\s*'([^']+)'/gi)?.map(m => m.split(/'|"/)[1]) || [];
+            const files = logContent.match(/(file|arquivo):\s*'([^']+)'/gi)?.map(m => m.split(/'|"/)[1]) || [];
+            const hashes = logContent.match(/\b[0-9a-fA-F]{32,128}\b/g) || [];
+            const domains = logContent.match(/\b(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\b/gi) || [];
+            const urls = logContent.match(/https?:\/\/[^\s]+/g) || [];
+            const entities = {
+                ips: [...new Set(ips)],
+                users: [...new Set(users)],
+                files: [...new Set(files)],
+                hashes: [...new Set(hashes)],
+                domains: [...new Set(domains)],
+                urls: [...new Set(urls)]
+            };
+            console.log('Entidades extraídas:', entities);
+            return entities;
+        }
+        function selectText(element) {
+            try {
+                const range = document.createRange();
+                range.selectNodeContents(element);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                console.log('Texto selecionado para cópia manual.');
+                return true;
+            } catch (err) {
+                console.error('Falha ao selecionar texto:', err);
+                return false;
+            }
+        }
+        async function copiarRelatorio() {
+            if (!reportOutput.textContent || reportOutput.textContent.trim() === '') {
+                console.warn('Nenhum conteúdo disponível para copiar.');
+                showModal('Erro ao Copiar', 'Nenhum relatório gerado para copiar. Gere um relatório primeiro.');
+                return;
+            }
+            if (!window.isSecureContext) {
+                console.warn('Contexto inseguro detectado. A API Clipboard requer HTTPS ou localhost.');
+                selectText(reportOutput);
+                showModal('Erro ao Copiar', 'A cópia automática não funciona em contextos inseguros (ex.: file://). O texto foi selecionado; pressione Ctrl+C para copiar manualmente.');
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(reportOutput.textContent);
+                showModal('Copiado!', 'O conteúdo do relatório foi copiado para a área de transferência.');
+                console.log('Relatório copiado com sucesso, tamanho:', reportOutput.textContent.length);
+            } catch (err) {
+                console.error('Falha ao copiar:', {
+                    error: err.message,
+                    stack: err.stack,
+                    contentLength: reportOutput.textContent.length,
+                    contentPreview: reportOutput.textContent.substring(0, 100) + (reportOutput.textContent.length > 100 ? '...' : '')
+                });
+                selectText(reportOutput);
+                showModal('Erro ao Copiar', 'Não foi possível copiar o relatório automaticamente. O texto foi selecionado; pressione Ctrl+C para copiar manualmente.');
+            }
+        }
+        let i = 0;
+        let text = '';
+        function simulateTyping(fullText) {
+            i = 0;
+            text = fullText;
+            reportOutput.innerHTML = '';
+            reportOutput.classList.add('typing-effect');
+            console.log('Iniciando efeito de digitação');
+            typeWriter();
+        }
+        function typeWriter() {
+            if (i < text.length) {
+                reportOutput.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 10);
+            } else {
+                reportOutput.classList.remove('typing-effect');
+                console.log('Efeito de digitação concluído');
+            }
+        }
+        window.onload = function () {
+            populateCategories();
+            updateStatus('SISTEMA INICIALIZADO. AGUARDANDO ENTRADA...');
+            console.log('Página carregada e categorias inicializadas');
+        };
+    </script>
+</body>
+
+</html>

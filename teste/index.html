@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberReporter ELITE Premium - Análise Avançada de Incidentes</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>CYBERREPORTER ELITE <span class="risk-badge risk-critical">PREMIUM</span></h1>
+                        <p>Análise avançada de incidentes com relatórios profissionais</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard">
+            <!-- Seção de Entrada -->
+            <div class="card input-section">
+                <h2 class="card-title"><i class="fas fa-file-import"></i> ENTRADA DE LOGS
+                    <!-- Substitua o log-source-selector atual por: -->
+                    <div class="log-source-selector">
+                        <div class="source-option active" data-value="padrao" onclick="selectSource(this)">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Padrão</span>
+                        </div>
+                        <div class="source-option" data-value="trend" onclick="selectSource(this)">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Trend Micro</span>
+                        </div>
+                        <div class="source-option" data-value="qradar" onclick="selectSource(this)">
+                            <i class="fas fa-robot"></i>
+                            <span>IBM QRadar</span>
+                        </div>
+                        <!-- Adicione outras fontes conforme necessário -->
+                    </div>
+                </h2>
+                <label for="log">Cole seu log de segurança abaixo:</label>
+                <textarea id="log" placeholder="[2023-07-15 14:32:45] SECURITY ALERT: Multiple failed login attempts (5) for user 'admin' from IP 192.168.1.105
+[2023-07-15 14:32:47] FIREWALL BLOCK: Suspicious port scan detected from 45.227.253.109
+..."></textarea>
+
+                <div class="advanced-options">
+                    <div class="advanced-options-title">
+                        <i class="fas fa-cog"></i> OPÇÕES AVANÇADAS
+                    </div>
+                    <div class="advanced-options-content">
+                        <div class="form-group ioc-container">
+                            <label>Indicadores de Comprometimento (IOCs):</label>
+                            <div id="ioc-list">
+                                <!-- Campo principal sempre visível -->
+                                <div class="ioc-item">
+                                    <input type="text" placeholder="Cole IP, Hash ou Domínio aqui"
+                                        oninput="addNewIocField(this)">
+                                    <button onclick="this.parentElement.remove()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Botão opcional para adicionar mais -->
+                            <button class="add-ioc" onclick="addIocField()">
+                                <i class="fas fa-plus"></i> Adicionar outro IOC
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="gerarRelatorio()">
+                        <i class="fas fa-bolt"></i> GERAR RELATÓRIO
+                    </button>
+                    <button class="btn btn-secondary" onclick="limparEntrada()">
+                        <i class="fas fa-eraser"></i> LIMPAR TUDO
+                    </button>
+                    <button class="btn btn-info" onclick="extrairDados()">
+                        <i class="fas fa-magic"></i> EXTRAIR DADOS
+                    </button>
+                </div>
+
+                <div id="status" class="status status-waiting">
+                    <i class="fas fa-clock"></i> AGUARDANDO ENTRADA...
+                </div>
+            </div>
+
+            <!-- Seção de Categorias (dentro do div.categories-section) -->
+            <div class="categories-container">
+                <div class="type-groups">
+                    <!-- Grupo CONEXÕES (já existente) -->
+                    <div class="type-group">
+                        <div class="type-group-title" onclick="toggleCategoryGroup(this)">
+                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-network-wired"></i> CONEXÕES
+                        </div>
+                        <div class="type-options">
+                            <div class="type-option" onclick="toggleCheckbox('type1')">
+                                <input type="checkbox" id="type1" name="incidentType" value="Conexão Inbound Suspeita">
+                                <label for="type1">Conexão Inbound Suspeita</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type2')">
+                                <input type="checkbox" id="type2" name="incidentType" value="Acesso a IPs suspeitos">
+                                <label for="type2">Acesso a IPs suspeitos</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type11')">
+                                <input type="checkbox" id="type11" name="incidentType" value="Exfiltração">
+                                <label for="type11">Exfiltração</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type17')">
+                                <input type="checkbox" id="type17" name="incidentType" value="Comunicação Inbound TOR">
+                                <label for="type17">Comunicação Inbound TOR</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type18')">
+                                <input type="checkbox" id="type18" name="incidentType"
+                                    value="Canary List (comunicação maliciosa)">
+                                <label for="type18">Canary List</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grupo AUTENTICAÇÃO (completo) -->
+                    <div class="type-group">
+                        <div class="type-group-title" onclick="toggleCategoryGroup(this)">
+                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-user-lock"></i> AUTENTICAÇÃO
+                        </div>
+                        <div class="type-options">
+                            <div class="type-option" onclick="toggleCheckbox('type3')">
+                                <input type="checkbox" id="type3" name="incidentType" value="Falhas de autenticação">
+                                <label for="type3">Falhas de autenticação</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type9')">
+                                <input type="checkbox" id="type9" name="incidentType" value="Usuário ADD Grupo">
+                                <label for="type9">Usuário ADD Grupo</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type12')">
+                                <input type="checkbox" id="type12" name="incidentType"
+                                    value="Senha Administrador Alterada">
+                                <label for="type12">Senha Admin Alterada</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type13')">
+                                <input type="checkbox" id="type13" name="incidentType"
+                                    value="Usuário ADD Grupo de ADMIN">
+                                <label for="type13">Usuário ADD Grupo ADMIN</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type19')">
+                                <input type="checkbox" id="type19" name="incidentType"
+                                    value="Alteração de senha por usuário administrator">
+                                <label for="type19">Alteração de senha admin</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grupo MONITORAMENTO (completo) -->
+                    <div class="type-group">
+                        <div class="type-group-title" onclick="toggleCategoryGroup(this)">
+                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-heart-pulse"></i> MONITORAMENTO
+                        </div>
+                        <div class="type-options">
+                            <div class="type-option" onclick="toggleCheckbox('type4')">
+                                <input type="checkbox" id="type4" name="incidentType" value="Silent Log Source">
+                                <label for="type4">Silent Log Source</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type5')">
+                                <input type="checkbox" id="type5" name="incidentType" value="Heartbeat">
+                                <label for="type5">Heartbeat</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type6')">
+                                <input type="checkbox" id="type6" name="incidentType" value="Host Critical Condition">
+                                <label for="type6">Host Critical Condition</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grupo AMEAÇAS (completo) -->
+                    <div class="type-group">
+                        <div class="type-group-title" onclick="toggleCategoryGroup(this)">
+                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-bug"></i> AMEAÇAS
+                        </div>
+                        <div class="type-options">
+                            <div class="type-option" onclick="toggleCheckbox('type7')">
+                                <input type="checkbox" id="type7" name="incidentType" value="Malware">
+                                <label for="type7">Malware</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type8')">
+                                <input type="checkbox" id="type8" name="incidentType"
+                                    value="Vulnerabilidades Encontradas">
+                                <label for="type8">Vulnerabilidades</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type10')">
+                                <input type="checkbox" id="type10" name="incidentType" value="Midia Removivel">
+                                <label for="type10">Mídia Removível</label>
+                            </div>
+                            <div class="type-option" onclick="toggleCheckbox('type14')">
+                                <input type="checkbox" id="type14" name="incidentType" value="CyberArk">
+                                <label for="type14">CyberArk</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Resultado -->
+            <div class="card result-section">
+                <h2 class="card-title"><i class="fas fa-file-contract"></i> RELATÓRIO ANALÍTICO
+                    <span id="log-type" class="type-tag hidden">TIPO</span>
+                    <span id="risk-level" class="risk-badge hidden">RISCO</span>
+                </h2>
+
+                <div class="result-actions">
+                    <button class="btn btn-success btn-sm" onclick="copiarRelatorio()" title="Copiar relatório">
+                        <i class="far fa-copy"></i> COPIAR
+                    </button>
+                    <button class="btn btn-primary btn-sm" onclick="exportarRelatorio()" title="Exportar como arquivo">
+                        <i class="fas fa-file-export"></i> EXPORTAR
+                    </button>
+                </div>
+
+                <pre id="resultado">[Seu relatório de segurança aparecerá aqui]</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="modal-title">ALERTA</h3>
+            <div class="modal-message" id="modal-message">Mensagem de status</div>
+            <button class="btn modal-close" onclick="fecharModal()">
+                <i class="fas fa-times"></i> FECHAR
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

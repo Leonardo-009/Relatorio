@@ -1,0 +1,24 @@
+{
+  "name": "Relatorio",
+  "version": "1.0.0",
+  "description": "Aplicativo de Geração de Relatórios de Incidentes de Segurança - CyberReporter ELITE",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-win": "electron-packager . Relatorio --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icon.ico --prune=true --out=release-builds --version-string.CompanyName=\"CyberReporter Elite\" --version-string.FileDescription=\"Relatórios de Segurança\" --version-string.ProductName=\"CyberReporter Elite\"",
+    "package-mac": "electron-packager . Relatorio --overwrite --asar=true --platform=darwin --arch=x64 --icon=assets/icon.icns --prune=true --out=release-builds",
+    "package-linux": "electron-packager . Relatorio --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icon.png --prune=true --out=release-builds"
+  },
+  "keywords": [
+    "security",
+    "report",
+    "cybersecurity",
+    "electron"
+  ],
+  "author": "Seu Nome",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.0.8",
+    "electron-packager": "^17.1.2"
+  }
+}
